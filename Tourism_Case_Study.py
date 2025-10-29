@@ -15,7 +15,7 @@ from streamlit_option_menu import option_menu
 st.set_page_config(layout="wide")
 
 
-mypath = ''
+mypath = '/Users/boredom/Downloads/Data_Science/DataSets/'
 
 tourism = pd.read_csv(mypath + 'tour_econ_df.csv')
 
@@ -61,9 +61,9 @@ full_cat_dict = {'country' : 'Country',
 temp_cat_dict = {'country' : 'Country',
             'region' : 'Region',
             'decade' : 'Decade',
-            'length_cat' : 'length_cat',
-            'arv_cat' : 'arv_cat',
-            'gdp_cat' : 'gdp_cat'
+            'length_cat' : 'Length of Stay Levels',
+            'arv_cat' : 'Incoming Arrival Levels',
+            'gdp_cat' : 'GDP Per Capita Levels'
             }
 cat_dict = temp_cat_dict
 
@@ -90,178 +90,31 @@ range_sum_dict = {'tourists_per_1000' : [1, 10000],
 with st.sidebar: 
 	selected = option_menu(
 		menu_title = 'Navigation Pane',
-		options = ['Data Cleaning', 'Abstract', 'Background Information', 'Data Cleaning','Exploratory Analysis', 'Economic Impact of Tourism', 'Economic Impact of Dwelling', 'Tourism Line Plots by Country', 'Conclusion', 'Bibliography'],
+		options = ['Abstract', 'Background Information', 'Data Cleaning','Exploratory Analysis', 'Decennial Impact of Tourism', 'Regional Impact of Tourism', 'Progressive Impact of Tourism', 'Conclusion', 'Bibliography'],
 		menu_icon = 'list',
-		icons = ['book', 'bookmark-check', 'book', 'box', 'map', 'map', 'file', 'map', 'bar-chart', 'check2-circle'],
+		icons = ['bookmark-check', 'book', 'box', 'map', 'map', 'file', 'map', 'bar-chart', 'check2-circle'],
 		default_index = 0,
 		)
 
 
-if selected=='Data Cleaning':
-    st.title('Data Cleaning')
-    
-    # country_region = pd.read_csv('DataSets/world-regions-according-to-the-world-bank.csv')
-    # country_region.rename({'Entity' : 'country',
-    #               'Code' : 'code',
-    #               'Year' : 'year',
-    #               'World Region according to the World Bank' : 'region'}, axis = 1, inplace = True)
-    # country_region.loc[country_region['country']=='Micronesia', 'code'] = 'FSM'
-    # country_region.set_index('code', inplace = True) # set code as key
-    # country_region_dict = dict(country_region["region"])
-    # country_region.info()
-    
-    # csv_files = [
-    #     '1- international-tourist-arrivals-by-region-of-origin.csv',
-    #     '2- number-of-individuals-employed-in-tourism-related-industries-per-1000-people.csv',
-    #     '3- international-tourist-departures-per-1000.csv',
-    #     '7- tourism-gdp-proportion-of-total-gdp.csv',
-    #     '10- average-length-of-stay.csv',
-    #     '11- number-of-people-employed-in-food-and-beverage-serving-activities-per-1000-population.csv',
-    #     '15- foreign-guests-in-hotels-and-similar-establishments.csv',
-    #     '17- international-same-day-visitors-per-1000-people.csv',
-    #     '18- international-tourist-departures.csv',
-    #     '19- tourist-departures-per-1000-vs-gdp.csv',
-    #     '20- average-expenditures-of-tourists-abroad.csv',
-    #     '21- average-expenditures-of-international-tourists-domestically.csv',
-    #     '23- international-tourist-trips-per-1000-people.csv',
-    #     '24- international-trips-for-business-and-professional-reasons.csv',
-    #     '30- monthly-co2-emissions-from-international-aviation.csv',
-    #     '38- domestic-trips-by-tourists-per-1000-people.csv'
-    # ]
-    
-    # df_names = [
-    #     'int_arv', 'empl_tour_1000', 'dep_1000', 'tour_gdp', 'avg_stay',
-    #     'empl_serv_1000', 'guests', 'vist_1000', 'int_dep', 'dep_gdp',
-    #     'expd_out', 'expd_int', 'int_1000', 'int_bus', 'em_c', 'dom_1000'
-    # ]
-    
-    # dataframes = {}
-    
-    # for file, name in zip(csv_files, df_names):
-    #     df = pd.read_csv(mypath + file)
-    #     df.rename({'Entity': 'country', 'Code': 'code', 'Year': 'year'}, axis=1, inplace=True)
-    #     globals()[name] = df
-    
-    # dep_gdp
-    # dep_gdp.drop(['Outbound departures (tourists) per 1000 people', 'Continent'], axis=1, inplace=True)
-    # em_c.rename({'Day' : 'day'}, axis=1, inplace=True)
-    # em_c["day"] = pd.to_datetime(em_c["day"])
-    # em_c["weekday"] = em_c["day"].dt.day_name()
-    # em_c["month"] = em_c["day"].dt.month_name()
-    # em_c["year"] = em_c["day"].dt.year
-    # em_c_columns = ['Monthly CO₂ emissions from international aviation', 'Monthly CO₂ emissions from domestic aviation', 'Monthly CO₂ total emissions from aviation']
-    # em_c_year = em_c.drop(['day', 'weekday', 'month'], axis=1).groupby(['country', 'code', 'year'])[em_c_columns].sum().reset_index()
-    
-    # avg_stay['code'].value_counts().iloc[-50:]
-    
-    # tourism_country = pd.DataFrame(columns=['country', 'code', 'year'])
-    # tourism_regions = pd.DataFrame(columns=['country', 'code', 'year'])
-    # dataframes = {
-    #     "empl_tour_1000" : empl_tour_1000,
-    #     "tour_gdp" : tour_gdp,
-    #     "avg_stay" : avg_stay,
-    #     "empl_serv_1000" :empl_serv_1000,
-    #     "guests" :guests,
-    #     "vist_1000" :vist_1000,
-    #     "int_dep" : int_dep,
-    #     "dep_gdp" : dep_gdp,
-    #     "expd_int" : expd_int,
-    #     "expd_out" : expd_out,
-    #     "int_1000" : int_1000,
-    #     "int_bus" : int_bus,
-    #     "em_c" : em_c_year,
-    #     "dep_1000" : dep_1000,
-    #     "dom_1000" : dom_1000
-    # }
-    
-    # unique_countries=pd.concat(dataframes)[['code', 'country']].drop_duplicates()
-    # unique_region=unique_countries.loc[unique_countries['code'].isnull(), 'country']
-    # country_code = unique_countries.dropna()
-    # country_code.set_index('code', inplace=True)
-    
-    # tour_region_list = []
-    # tour_country_list = []
-    
-    # for source, df in dataframes.items():
-    #     df.loc[:, 'data_source'] = source
-    #     tour_region_list.append(df[df['country'].isin(unique_region)].drop('code', axis=1))
-    #     tour_country_list.append(df[~df['country'].isin(unique_region)].drop('country', axis=1))
-    #     # tourism_regions = pd.merge(tourism, df[df['country'].isin(unique_region)].drop('code', axis=1), on=['country', 'year'], how='outer')
-    #     # tourism = pd.merge(tourism, df[~df['country'].isin(unique_region)].drop('country', axis=1), on=['code', 'year'], how='outer')
-    
-    # tourism_regions = pd.concat(tour_region_list, axis = 0, ignore_index=True)
-    # tourism = pd.concat(tour_country_list, axis = 0, ignore_index=True)
-    # # tourism_country
-    
-    # tourism['year'] = tourism['year'].astype('category')
-
-    # tourism.sort_values(['country', 'year'], inplace=True)
-
-    # regions_list = ["Europe and Central Asia", "Sub-Saharan Africa", "Latin America and Caribbean", "East Asia and Pacific:", "Middle East", "North Africa", "South Asia", "North America"]
-
-    # full_num_dict = {'international_em' : 'Intl Emissions', 
-    #             'domestic_em' : 'Domestic Emissions', 
-    #             'total_em' : 'Total Emissions', 
-    #             'year' : 'Year',
-    #             "empl_tour_1000" : "Tourism Employment (Per 1000 People)",
-    #             "tour_prop_total" : "Tourism GDP : Total GDP",
-    #             "length" : "Length of Stay",
-    #             "empl_serv_1000" : "Serving Employment (Per 1000 People)",
-    #             "guests" : "Guests",
-    #             "arv_1000" : "Arrivals (Per 1000 People)",
-    #             "dep_tourists" : "Departing_Tourists",
-    #             "tourists_per_1000" : "Tourists per 1000 People",
-    #             "domestic_trips_1000" : "Domestic Trips (Per 1000 People)",
-    #             "purpose_biz_profesh" : "Purpose of Travel",
-    #             "int_dep" : "International Departures"
-    #             }
-
-    # temp_num_dict = {'year' : 'Year',
-    #                  "gdp" : "GDP",
-    #                  "length" : "Length of Stay",
-    #                  "arv_1000" : "Arrivals (Per 1000 People)",
-    #                  "purpose_biz_profesh" : "Number of Business Travelers",
-    #                  "tourists_per_1000" : "Tourists per 1000 People"
-    #                  }
-
-    # num_dict = temp_num_dict
-
-    # full_cat_dict = {'country' : 'Country',
-    #             'region' : 'Region', 
-    #             'month' : 'Month', 
-    #             'weekday' : 'Weekday',
-    #             'decade' : 'Decade'
-    #             }
-    # temp_cat_dict = {'country' : 'Country',
-    #             'region' : 'Region',
-    #             'decade' : 'Decade',
-    #             'length_cat' : 'length_cat',
-    #             'arv_cat' : 'arv_cat',
-    #             'gdp_cat' : 'gdp_cat'
-    #             }
-    # cat_dict = temp_cat_dict
-
-    # all_dict = num_dict.copy()
-    # all_dict.update(cat_dict)
-
-    # range_mean_dict = {'tourists_per_1000' : [1, 300],
-    #                     'gdp' : [800, 40000],
-    #                     'length' : [1, 9],
-    #                     'arv_1000' : [1, 300],
-    #                     'purpose_biz_profesh' : [100, 4500000] 
-    #                     }
-    # range_sum_dict = {'tourists_per_1000' : [1, 10000],
-    #                     'gdp' : [1, 1000000],
-    #                     'length' : [1, 150],
-    #                     'arv_1000' : [1, 1500],
-    #                     'purpose_biz_profesh' : [1, 100000000] 
-    #                     }
-
 if selected=='Abstract':
-    st.title("Tourism Abstract")
+    st.title("Tourism Intensity, Duration, and Return: Global Patterns 1995–2020")
     
-    st.markdown('Tourism is a vital component of global economies, significantly influencing gross domestic product (GDP), employment, and regional development through visitor spending and infrastructure growth. Many countries and regions thrive on tourism, but what are the key factors that drive its economic impact? Why do some destinations generate greater economic benefits than others? This case study leverages a comprehensive dataset to explore the scientific and economic factors behind tourism’s influence, examining correlations between GDP, tourist arrivals, length of stay, and regional variations. By analyzing data from 2015 to 2025, this study aims to uncover patterns that explain tourism’s economic contributions, identify the factors that enhance economic outcomes, and understand regional differences in tourism-driven growth. Let’s dive into the data to reveal the dynamics of tourism’s economic impact!')
+    st.markdown('Tourism is a vital component of global economies, significantly influencing gross domestic product (GDP), employment, and regional development through visitor spending and infrastructure growth. Many countries and regions thrive on tourism, but what are the key factors that drive its economic impact? Why do some destinations generate greater economic benefits than others? This case study leverages a comprehensive dataset to explore the scientific and economic factors behind tourism’s influence, examining correlations between GDP, tourist arrivals, length of stay, and regional variations. By analyzing data from 1995 to 2020, this study aims to uncover patterns that explain tourism’s economic contributions, identify the factors that enhance economic outcomes, and understand regional differences in tourism-driven growth. Let’s dive into the data to reveal the dynamics of tourism’s economic impact!')
+    
+    st.subheader('Questions to be Answered (Ongoing)')
+    
+    st.markdown('To what extent does the length of tourist stay reflect GDP per capita, and why do certain low-income regions—particularly in Sub-Saharan Africa and South Asia—consistently defy this trend with longer average stays?')
 
+    st.markdown('How do small island developing states (SIDS) achieve disproportionately high tourism arrival intensities despite limited land area and population—and what does this reveal about the scalability of tourism-led development?')
+    
+    st.markdown('Are high-income countries becoming "tourism-saturated", as suggested by declining growth rates in arrivals per 1000 people after 2010, while emerging economies in Southeast Asia and the Middle East accelerate rapidly?')
+
+    st.markdown('What underlying geopolitical, infrastructural, and marketing factors explain why some landlocked, low-GDP nations (e.g., Nepal, Eswatini) outperform coastal peers in tourism density—and can these models be replicated?')
+    
+    st.markdown('Does the sharp decline in tourism metrics across nearly all countries in 2020 represent a structural reset in global travel behavior, or merely a temporary shock—and how do pre- and post-pandemic trajectories differ by region and income level?')
+
+    st.markdown('Which countries dominate inbound versus outbound tourism flows, and what do imbalances in this ratio reveal about global economic inequality, cultural influence, and mobility privilege?')
 
 
 
@@ -288,15 +141,15 @@ if selected=="Background Information":
     
     st.markdown('Tourism is a significant driver of global economic activity, contributing substantially to gross domestic product (GDP), employment, and regional development. In 2024, the global travel and tourism sector accounted for approximately 10% of global GDP (US$10.9 trillion) and supported 357 million jobs worldwide, according to the World Travel & Tourism Council (WTTC). The economic impact of tourism is often measured through its direct contributions, such as tourist spending, and indirect effects, including job creation and infrastructure development, with strong correlations to tourist arrivals, length of stay, and regional economic performance.')
     
-    st.markdown('The dataset for this study includes economic indicators from various countries and regions, covering metrics such as GDP contribution from tourism, international tourist arrivals, average length of stay, and yearly trends from 2015 to 2025. Each data point reflects a specific country or region, detailing tourist arrivals (e.g., 1.3 billion globally in 2023), tourism’s share of GDP (e.g., 9.1% globally in 2023), and regional variations, such as the Middle East’s 22% increase in arrivals compared to pre-pandemic levels. These metrics allow for an analysis of how tourism influences economic growth and how factors like tourist arrivals and length of stay correlate with GDP.')
+    st.markdown('The dataset for this study includes economic indicators from various countries and regions, covering metrics such as GDP contribution from tourism, international tourist arrivals, average length of stay, and yearly trends from 1995 to 2020. Each data point reflects a specific country or region, detailing tourist arrivals (e.g., 1.3 billion globally in 2023), tourism’s share of GDP (e.g., 9.1% globally in 2023), and regional variations, such as the Middle East’s 22% increase in arrivals compared to pre-pandemic levels. These metrics allow for an analysis of how tourism influences economic growth and how factors like tourist arrivals and length of stay correlate with GDP.')
     
     st.markdown('Previous studies provide insights into these correlations. According to the WTTC (2021), countries with high tourist arrivals, such as the United States, China, and France (100 million arrivals in 2023), show significant GDP contributions from tourism, with international visitor spending reaching US$1.9 trillion globally in 2024. A study by Nhamo et al. (2021) found that a 1% increase in tourism receipts per capita boosts GDP per capita by 0.31% in the long run, with stronger effects in tourism-specialized countries like Barbados and Seychelles. This suggests that tourist arrivals and spending are key drivers of economic growth, particularly in tourism-dependent regions.')
     
     st.markdown('Furthermore, a 2022 study by Fahimi et al. identified bidirectional causality between tourism and GDP in 105 countries, with regions like Europe and the Americas showing stronger correlations due to high tourist arrivals (2010–2017 data). The study noted that economic growth also boosts tourism, creating a feedback loop. For instance, countries with higher GDP growth often invest in tourism infrastructure, attracting more visitors. Brida et al. (2020) highlighted that countries with high tourist arrivals per capita, such as Uruguay, exhibit stronger GDP growth compared to less tourism-intensive countries like Brazil.')
     
-    st.markdown('The length of stay also plays a role in economic impact. According to the World Bank (2025), longer tourist stays correlate with higher spending, which directly boosts GDP and job creation, particularly in small island nations like Sierra Leone, where tourism doubled arrivals and created 17,000 jobs. UN Tourism (2024) reported that regions with extended visitor stays, such as the Middle East, saw faster economic recovery post-pandemic, with tourism direct GDP reaching US$3.3 trillion in 2023. These findings suggest that length of stay and tourist arrivals are critical factors in maximizing economic benefits.')
+    st.markdown('The length of stay also plays a role in economic impact. According to the World Bank (2020), longer tourist stays correlate with higher spending, which directly boosts GDP and job creation, particularly in small island nations like Sierra Leone, where tourism doubled arrivals and created 17,000 jobs. UN Tourism (2024) reported that regions with extended visitor stays, such as the Middle East, saw faster economic recovery post-pandemic, with tourism direct GDP reaching US$3.3 trillion in 2023. These findings suggest that length of stay and tourist arrivals are critical factors in maximizing economic benefits.')
     
-    st.markdown('This case study aims to analyze the 2023–2025 trends in tourism’s economic impact, testing correlations between tourist arrivals, length of stay, GDP, and regional differences. It will explore whether countries with higher arrivals and longer stays continue to see stronger GDP contributions, and how regional variations influence these outcomes, building on the insights from prior studies.')
+    st.markdown('This case study aims to analyze the 1995–2020 trends in tourism’s economic impact, testing correlations between tourist arrivals, length of stay, GDP, and regional differences. It will explore whether countries with higher arrivals and longer stays continue to see stronger GDP contributions, and how regional variations influence these outcomes, building on the insights from prior studies.')
 
 
 
@@ -338,8 +191,53 @@ if selected=="Background Information":
 
 
 
-if selected=="Data Cleaning":
+if selected=='Data Cleaning':
     st.title('Data Cleaning')
+    
+    st.markdown('explain what code does')
+    
+    country_codes = '''tourism = pd.DataFrame(columns=['country', 'code', 'year'])
+    tourism_regions = pd.DataFrame(columns=['country', 'code', 'year'])
+    dataframes = {
+        "empl_tour_1000" : empl_tour_1000,
+        "tour_gdp" : tour_gdp,
+        "avg_stay" : avg_stay,
+        "empl_serv_1000" :empl_serv_1000,
+        "guests" :guests,
+        "vist_1000" :vist_1000,
+        "int_dep" : int_dep,
+        "dep_gdp" : dep_gdp,
+        "expd_int" : expd_int,
+        "expd_out" : expd_out,
+        "int_1000" : int_1000,
+        "int_bus" : int_bus,
+        "em_c" : em_c_year,
+        "dep_1000" : dep_1000,
+        "dom_1000" : dom_1000
+    }
+    
+    unique_countries=pd.concat(dataframes)[['code', 'country']].drop_duplicates()
+    unique_region=unique_countries.loc[unique_countries['code'].isnull(), 'country']
+    country_code = unique_countries.dropna()
+    country_code.set_index('code', inplace=True)'''
+    
+    st.code(country_codes, language='python')
+    
+    st.markdown('explain what code does')
+
+    concat = '''tour_region_list = []
+    tour_country_list = []
+    
+    for source, df in dataframes.items():
+        df.loc[:, 'data_source'] = source
+        tour_region_list.append(df[df['country'].isin(unique_region)].drop('code', axis=1))
+        tour_country_list.append(df[~df['country'].isin(unique_region)].drop('country', axis=1))
+
+    
+    tourism_regions = pd.concat(tour_region_list, axis = 0, ignore_index=True)
+    tourism_country = pd.concat(tour_country_list, axis = 0, ignore_index=True)'''
+    
+    st.code(concat, language='python')
     
     
     
@@ -383,12 +281,82 @@ if selected=="Data Cleaning":
 if selected=="Exploratory Analysis":
     st.title('Exploratory Analysis')
     
+    st.header('Exploring Immigration Factors by Country')
     
+    st.markdown('---')
     
+    st.markdown('### <div style="text-align: center"> Choropleth Map </div>', unsafe_allow_html=True)
+        
+    col15, col16 = st.columns([2, 5])
+
+    with st.form('choropleth'):
+        color_var = col15.selectbox(
+            'Select an emissions variable for color',
+            np.setdiff1d(list(num_dict.values()), 'Year'),
+            key=33
+        )
+        color_var_df = [k for k, v in num_dict.items() if v == color_var]
+        
+        col15_agg = col15.radio('Select How You want to Aggregate Yearly Data', ['Average', 'Sum'], key = 100)
+        
+        hover_cols = np.setdiff1d(list(num_dict.values()), ['Year', color_var])
+        hover_cols_df = [k for k, v in num_dict.items() if v in hover_cols]
+        
+        # color_scales = [
+        #     'Viridis', 'Cividis', 'Inferno', 'Magma', 'Plasma',
+        #     'Hot', 'Blackbody', 'Earth', 'Electric', 'Portland',
+        #     'Rainbow', 'Jet', 'Blues', 'Greens', 'Reds', 
+        #     'YlOrRd', 'YlGnBu', 'BuPu', 'OrRd', 'PuRd'
+        # ]
+        
+        # color_scale = col15.selectbox(
+        #     'Select color scale',
+        #     color_scales,
+        #     key=37
+        # )
     
+        submitted = st.form_submit_button("Generate Choropleth Map")
+        
+        if submitted:
+            if col15_agg == 'Average':
+                color_range_dict = range_mean_dict
+                multi_col_df = tourism[['code']+color_var_df+hover_cols_df].groupby('code').agg(['mean', 'count']).reset_index()
+                multi_col_df.columns = ['_'.join(col) for col in multi_col_df.columns]
+                keep_cols = ['code_', f'{color_var_df[0]}_mean', f'{color_var_df[0]}_count']+[f'{var}_mean'for var in hover_cols_df]
+                data = multi_col_df[keep_cols]
+                multi_col = f'{color_var_df[0]}_mean'
+            elif col15_agg == 'Sum':
+                color_range_dict = range_sum_dict
+                multi_col_df = tourism[['code']+color_var_df+hover_cols_df].groupby('code').agg(['sum', 'count']).reset_index()
+                multi_col_df.columns = ['_'.join(col) for col in multi_col_df.columns]
+                keep_cols = ['code_', f'{color_var_df[0]}_sum', f'{color_var_df[0]}_count']+[f'{var}_sum'for var in hover_cols_df]
+                data = multi_col_df[keep_cols]
+                multi_col = f'{color_var_df[0]}_sum'
+            fig8 = px.choropleth(
+                data,
+                locations='code_',
+                locationmode='ISO-3',
+                range_color=color_range_dict[color_var_df[0]],
+                color=multi_col, 
+                color_continuous_scale='sunset',
+                labels={multi_col: color_var,
+                        'code_' : 'country'},
+                title=f'{color_var}',
+                hover_name='code_',
+                hover_data=keep_cols
+                )
+            
+            fig8.update_layout(margin={"r":0, "t":0, "l":0, "b":0})
+            col16.plotly_chart(fig8, use_container_width=True)
+            
+    st.markdown('---')
     
-    st.subheader('histogram two num one cat')
+    st.header('Exploring Immigration Factors by Time and Region')
     
+    st.markdown('---')
+    
+    st.markdown('### <div style="text-align: center"> Histogram </div>', unsafe_allow_html=True)
+        
     col1, col2 = st.columns([2, 5])
     
     with st.form('histogram two num one cat'):
@@ -503,10 +471,10 @@ if selected=="Exploratory Analysis":
     col7, col8 = st.columns([2, 5])
 
     with st.form('histogram_two_cat'):
-        col7_x = col7.selectbox('Select a categorical variable for the x-axis', cat_dict.values(), key=16)
+        col7_x = col7.selectbox('Select a categorical variable for the x-axis', np.setdiff1d(list(cat_dict.values()), 'Country'), key=16)
         col7_x_df = [k for k, v in cat_dict.items() if v == col7_x][0]
         
-        col7_color = col7.selectbox('Select a categorical variable for the color', cat_dict.values(), key=17)
+        col7_color = col7.selectbox('Select a categorical variable for the color', np.setdiff1d(list(cat_dict.values()), [col7_x, 'Country']), key=17)
         col7_color_df = [k for k, v in cat_dict.items() if v == col7_color][0]
         
         col7_y_type = col7.selectbox('Select y-axis type', ['Counts', 'Percent'], key=18)
@@ -531,10 +499,10 @@ if selected=="Exploratory Analysis":
     col9, col10 = st.columns([2, 5])
     
     with st.form('histogram_two_cat_enhanced'):
-        col9_x = col9.selectbox('Select a categorical variable for the x-axis',cat_dict.values(),key=19)
+        col9_x = col9.selectbox('Select a categorical variable for the x-axis',np.setdiff1d(list(cat_dict.values()), 'Country'),key=19)
         col9_x_df = [k for k, v in cat_dict.items() if v == col9_x][0]
         
-        col9_color = col9.selectbox('Select a categorical variable for the color',np.setdiff1d(list(cat_dict.values()),[col9_x]),key=20)
+        col9_color = col9.selectbox('Select a categorical variable for the color',np.setdiff1d(list(cat_dict.values()),[col9_x, 'Country']),key=20)
         col9_color_df = [k for k, v in cat_dict.items() if v == col9_color][0]
         
         col9_y_type = col9.selectbox('Select y-axis type',['Counts','Percent'],key=21)
@@ -583,98 +551,6 @@ if selected=="Exploratory Analysis":
             fig6.update_layout(showlegend=True,margin=dict(l=20,r=20,t=50,b=20),font=dict(size=12))
             col12.plotly_chart(fig6)
     
-    
-    
-    
-    
-    st.subheader('scatter_num_num_cat')
-    
-    col13, col14 = st.columns([2, 5])
-    
-    with st.form('scatter_num_num_cat'):
-        col13_x = col13.selectbox('Select a numeric variable for the x-axis',num_dict.values(),key=28)
-        col13_x_df = [k for k, v in num_dict.items() if v == col13_x][0]
-        
-        col13_y = col13.selectbox('Select a numeric variable for the y-axis',np.setdiff1d(list(num_dict.values()),[col13_x]),key=29)
-        col13_y_df = [k for k, v in num_dict.items() if v == col13_y][0]
-        
-        col13_color = col13.selectbox('Select a categorical variable for the color', list(cat_dict.values()), key=30)
-        col13_color_df = [k for k, v in cat_dict.items() if v == col13_color][0]
-        
-        submitted = st.form_submit_button('Submit to produce the scatter plot')
-        
-        if submitted:
-            fig7=px.scatter(tourism,x=col13_x_df,y=col13_y_df,color=col13_color_df,hover_name='country',labels=all_dict, log_x=True, facet_col = col13_color_df, facet_col_spacing=0.1, log_y = True)
-            fig7.update_layout(showlegend=True,margin=dict(l=20,r=20,t=50,b=20),font=dict(size=12))
-            col14.plotly_chart(fig7)
-    
-    
-    
-    
-    
-    st.subheader('chloropeth')
-    
-    col15, col16 = st.columns([2, 5])
-
-    with st.form('choropleth'):
-        color_var = col15.selectbox(
-            'Select an emissions variable for color',
-            np.setdiff1d(list(num_dict.values()), 'Year'),
-            key=33
-        )
-        color_var_df = [k for k, v in num_dict.items() if v == color_var]
-        
-        col15_agg = col15.radio('Select How You want to Aggregate Yearly Data', ['Average', 'Sum'], key = 100)
-        
-        hover_cols = np.setdiff1d(list(num_dict.values()), ['Year', color_var])
-        hover_cols_df = [k for k, v in num_dict.items() if v in hover_cols]
-        
-        # color_scales = [
-        #     'Viridis', 'Cividis', 'Inferno', 'Magma', 'Plasma',
-        #     'Hot', 'Blackbody', 'Earth', 'Electric', 'Portland',
-        #     'Rainbow', 'Jet', 'Blues', 'Greens', 'Reds', 
-        #     'YlOrRd', 'YlGnBu', 'BuPu', 'OrRd', 'PuRd'
-        # ]
-        
-        # color_scale = col15.selectbox(
-        #     'Select color scale',
-        #     color_scales,
-        #     key=37
-        # )
-    
-        submitted = st.form_submit_button("Generate Choropleth Map")
-        
-        if submitted:
-            if col15_agg == 'Average':
-                color_range_dict = range_mean_dict
-                multi_col_df = tourism[['code']+color_var_df+hover_cols_df].groupby('code').agg(['mean', 'count']).reset_index()
-                multi_col_df.columns = ['_'.join(col) for col in multi_col_df.columns]
-                keep_cols = ['code_', f'{color_var_df[0]}_mean', f'{color_var_df[0]}_count']+[f'{var}_mean'for var in hover_cols_df]
-                data = multi_col_df[keep_cols]
-                multi_col = f'{color_var_df[0]}_mean'
-            elif col15_agg == 'Sum':
-                color_range_dict = range_sum_dict
-                multi_col_df = tourism[['code']+color_var_df+hover_cols_df].groupby('code').agg(['sum', 'count']).reset_index()
-                multi_col_df.columns = ['_'.join(col) for col in multi_col_df.columns]
-                keep_cols = ['code_', f'{color_var_df[0]}_sum', f'{color_var_df[0]}_count']+[f'{var}_sum'for var in hover_cols_df]
-                data = multi_col_df[keep_cols]
-                multi_col = f'{color_var_df[0]}_sum'
-            fig8 = px.choropleth(
-                data,
-                locations='code_',
-                locationmode='ISO-3',
-                range_color=color_range_dict[color_var_df[0]],
-                color=multi_col, 
-                color_continuous_scale='sunset',
-                labels={multi_col: color_var,
-                        'code_' : 'country'},
-                title=f'{color_var}',
-                hover_name='code_',
-                hover_data=keep_cols
-                )
-            
-            fig8.update_layout(margin={"r":0, "t":0, "l":0, "b":0})
-            col16.plotly_chart(fig8, use_container_width=True)
         
     st.subheader('Scatter Plot')
     
@@ -683,11 +559,11 @@ if selected=="Exploratory Analysis":
     with st.form('scatter_form'):
         x_var = col17.selectbox('Select x-axis variable', num_dict.values(), key=38)
         x_var_df = [k for k, v in num_dict.items() if v == x_var][0]
-        y_var = col17.selectbox('Select y-axis variable', num_dict.values(), key=39)
+        y_var = col17.selectbox('Select y-axis variable', np.setdiff1d(list(num_dict.values()), x_var), key=39)
         y_var_df = [k for k, v in num_dict.items() if v == y_var][0]
         
         # User selects color variable (categorical)
-        color_var = col17.selectbox('Select color variable', cat_dict.values(), key=40)
+        color_var = col17.selectbox('Select color variable', np.setdiff1d(list(cat_dict.values()), 'Country'), key=40)
         color_var_df = [k for k, v in cat_dict.items() if v == color_var][0]
         
         scale_y_match = col17.checkbox('Check to allow different y-scale', key=141)
@@ -718,7 +594,7 @@ if selected=="Exploratory Analysis":
         )
         fig9.update_yaxes(matches=match_y, showticklabels=True)
         fig9.update_xaxes(matches=match_x, showticklabels=True)
-        st.plotly_chart(fig9, use_container_width=True)
+        col18.plotly_chart(fig9, use_container_width=True)
         
     st.subheader('histogram one num one cat by cat(year)')
     
@@ -764,17 +640,17 @@ if selected=="Exploratory Analysis":
 
 
 
-if selected == 'Economic Impact of Tourism':
+if selected == 'Decennial Impact of Tourism':
     
-    st.title('Economic Impact of Tourism')
+    st.title('Decennial Impact of Tourism')
     
-    st.subheader('Tourism’s Contribution to GDP Growth')
+    st.header('Tourism’s Contribution to GDP Growth')
     
     col1, col2 = st.columns([0.1, 5])
     
     col3, col4 = st.columns([0.1, 5])
     
-    col4.markdown('tourists_per_1000 for country by decade')
+    col4.subheader('Tourists in each Country by Decade')
     
     cat_orders = {'decade' : ['1990s', '2000s', '2010s']}
     
@@ -797,7 +673,9 @@ if selected == 'Economic Impact of Tourism':
     fig4.update_yaxes(showticklabels=True)
     fig4.update_xaxes(showticklabels=True)
     col4.plotly_chart(fig4)
-    
+
+    col4.subheader('Incoming Arrivals in each Country by Decade')
+
     col4.markdown('1990s: The trend is positive, with GDP increasing with arrivals. High GDP countries like Macao and Finland benefit from gaming and nature tourism, while low GDP nations like Laos see modest gains. High GDP countries like the UK and low GDP nations like Vietnam lag, possibly due to diversification or infrastructure issues. The bar chart shows a growing arrival trend with early travel expansion.')
     
     col4.markdown('2000s: The positive trend strengthens, with Macao and Finland leading, and low GDP countries like Haiti improving slightly. High GDP nations like Canada and low GDP countries like Kenya deviate, likely due to mature economies or challenges. The bar chart reflects a notable arrival increase with economic growth.')
@@ -805,7 +683,7 @@ if selected == 'Economic Impact of Tourism':
     col4.markdown('2010s: The positive trend peaks, with Macao and Finland excelling, and low GDP nations like El Salvador growing. High GDP countries like Bermuda and low GDP nations like Jordan underperform, possibly from saturation or gaps. The bar chart shows the largest arrival rise, driven by digital platforms. The overall increase in arrivals over time, observed across these decades, is true due to global economic development, technological improvements in travel (e.g., online booking systems), and targeted tourism policies that have encouraged more visitors.')
     
     fig31=px.scatter(tourism[["decade","gdp","arv_1000","country"]].dropna().groupby(['country', 'decade']).mean().reset_index(),x="arv_1000",y="gdp",color="decade",hover_name='country',labels=all_dict, height = 400, width=400,title="Relationship Between Incoming Arrivals and GDP Per Capita", log_x=True, facet_col = "decade", category_orders=cat_orders, facet_col_spacing=0.1, log_y = True, facet_row_spacing=0.1)
-    fig31.update_layout(showlegend=True,margin=dict(l=20,r=20,t=50,b=20),font=dict(size=12))
+    fig31.update_layout(showlegend=True,margin=dict(l=20,r=20,t=50,b=20),font=dict(size=12), title_x=0.3)
     fig31.update_yaxes(showticklabels=True)
     fig31.update_xaxes(showticklabels=True)
     col4.plotly_chart(fig31)
@@ -815,7 +693,9 @@ if selected == 'Economic Impact of Tourism':
     fig.update_yaxes(showticklabels=True)
     fig.update_xaxes(showticklabels=True)
     col4.plotly_chart(fig)
-    
+
+    col4.subheader('Tourists Duration of Stay in each Country by Decade')
+
     col4.markdown('1990s: The trend is negative, with longer stays linked to lower GDP. High GDP countries like Switzerland and Bermuda fit this, possibly due to high costs, while low GDP nations like Morocco follow with budget tourism. High GDP countries like Macao and low GDP nations like El Salvador buck the trend, thanks to luxury or emerging tourism. The bar chart shows moderate stay lengths, focusing on short visits.')
     
     col4.markdown('2000s: The negative trend persists, with Switzerland and Thailand aligning due to cost or budget stays, while Macao and low GDP nations like China grow from diverse tourism. The bar chart indicates a slight stay increase with varied economic impact.')
@@ -823,7 +703,7 @@ if selected == 'Economic Impact of Tourism':
     col4.markdown('2010s: The negative trend continues, with Norway and Morocco fitting due to costs or budget travel, while Macao and low GDP nations like Vietnam grow from unique attractions. The bar chart shows a stay peak, but economic returns diminish. The overall trend of increasing length of stay over time, as noted across these decades, is true due to a shift toward experiential and longer-duration travel, driven by cultural interest and affordable travel options, though this does not always translate to proportional economic gains.')
     
     fig=px.scatter(tourism[["decade","gdp","length","country"]].dropna().groupby(['country', 'decade']).mean().reset_index(),x="length",y="gdp",color="decade",hover_name='country',labels=all_dict, height = 400, width=400,title="Relationship Between Length of Stay and GDP Per Capita", log_x=True, facet_col = "decade", category_orders=cat_orders, facet_col_spacing=0.1, log_y = True, facet_row_spacing=0.1)
-    fig.update_layout(showlegend=True,margin=dict(l=20,r=20,t=50,b=20),font=dict(size=12))
+    fig.update_layout(showlegend=True,margin=dict(l=20,r=20,t=50,b=20),font=dict(size=12), title_x=0.3)
     fig.update_yaxes(showticklabels=True)
     fig.update_xaxes(showticklabels=True)
     col4.plotly_chart(fig)
@@ -835,31 +715,19 @@ if selected == 'Economic Impact of Tourism':
     col4.plotly_chart(fig)
     
     
-if selected == 'Economic Impact of Dwelling':
+if selected == 'Regional Impact of Tourism':
     
-    st.title('Economic Impact of Dwelling')
+    st.title('Regional Impact of Tourism')
 
     col1, col2 = st.columns ([0.1, 5])
     
-    col2.markdown('tourists_per_1000 for country by region')
+    col2.subheader('Tourists in each Country by Region')
     col2.markdown('all graphs exhibit positive linear correlation, slight outliers from libya and tajikstan, constant top spot from Macau')
     
     col2.markdown('Europe and Central Asia: The trend is positive, with GDP rising as tourist numbers increase. High GDP countries like France and Germany fit this, driven by cultural tourism (e.g. France). Low GDP countries like Moldova and Kyrgyzstan align, with modest growth from emerging tourism. High GDP nations like Switzerland deviate, possibly due to economic diversification, while low GDP countries like Tajikistan lag due to instability. The bar chart shows a steady tourist rise, reflecting strong travel infrastructure. Sub-Saharan Africa: The trend is positive, with GDP growing with tourist numbers. High GDP countries like South Africa fit, boosted by wildlife tourism, while low GDP nations like Kenya align with gains from safari tourism. High GDP countries like Mauritius deviate, possibly due to small size limiting scalability, and low GDP countries like Burundi underperform due to conflict. The bar chart indicates a gradual tourist increase, driven by eco-tourism growth. Latin America and Caribbean: The trend is positive, with GDP increasing with tourists. High GDP countries like Mexico fit, thanks to beach tourism, and low GDP nations like Haiti align with cultural tourism growth. High GDP countries like Barbados deviate, possibly due to saturation, while low GDP countries like Haiti lag further due to instability. The bar chart shows a notable tourist rise, fueled by cruise tourism. East Asia and Pacific: The trend is positive, with GDP rising with tourist numbers. High GDP countries like Japan fit, driven by cultural appeal, and low GDP nations like Laos align with eco-tourism. High GDP countries like Singapore deviate, possibly due to diversification, while low GDP countries like Vanuatu underperform due to remoteness. The bar chart reflects a significant tourist increase, boosted by regional travel hubs. Middle East and North Africa: The trend is positive, with GDP growing with tourists. High GDP countries like the UAE fit, due to luxury tourism, and low GDP nations like Jordan align with historical sites. High GDP countries like Qatar deviate, possibly due to oil reliance, while low GDP countries like Yemen lag due to conflict. The bar chart shows a sharp tourist rise, driven by diversification efforts. South Asia: The trend is positive, with GDP increasing with tourist numbers. High GDP countries like India fit, thanks to cultural tourism, and low GDP nations like Nepal align with mountaineering. High GDP countries like Sri Lanka deviate, possibly due to recovery challenges, while low GDP countries like Afghanistan underperform due to security issues. The bar chart indicates a moderate tourist increase, supported by heritage tourism. North America: The trend is positive, with GDP rising with tourists. High GDP countries like the USA fit, driven by diverse attractions, and low GDP nations like Belize align with eco-tourism. High GDP countries like Canada deviate, possibly due to broad economic base, while low GDP countries like Haiti (regionally considered) lag due to instability. The bar chart shows a strong tourist rise, fueled by global appeal. The overall increase in tourists over time is true due to globalization, improved transportation, and marketing, making travel more accessible.')
     
-    col2.markdown('')
-    
-    col2.markdown('')
-    
-    col2.markdown('')
-    
-    fig=px.scatter(tourism.loc[tourism["region"].isin(regions_list),["region", "gdp","tourists_per_1000", "country"]], x="tourists_per_1000",y="gdp",color='region',labels=all_dict, title="", facet_col='region', facet_col_wrap=2, height=1000, width=400, log_x=True, facet_col_spacing=0.1, log_y=True, hover_name="country")
-    fig.update_layout(showlegend=True,margin=dict(l=20,r=20,t=50,b=20),font=dict(size=12))
-    fig.update_yaxes(showticklabels=True)
-    fig.update_xaxes(showticklabels=True)
-    col2.plotly_chart(fig)
-    
-    fig=px.scatter(tourism.loc[tourism["region"].isin(regions_list),["region", "gdp","tourists_per_1000", "country"]].groupby(["region", "country"]).mean(numeric_only=True).reset_index(), x="tourists_per_1000",y="gdp",color='region',labels=all_dict, title="", facet_col='region', facet_col_wrap=2, height=1000, width=400, log_x=True, facet_col_spacing=0.1, log_y=True, hover_name="country")
-    fig.update_layout(showlegend=True,margin=dict(l=20,r=20,t=50,b=20),font=dict(size=12))
+    fig=px.scatter(tourism.loc[tourism["region"].isin(regions_list),["region", "gdp","tourists_per_1000", "country"]].groupby(["region", "country"]).mean(numeric_only=True).reset_index(), x="tourists_per_1000",y="gdp",color='region',labels=all_dict, title="Relationship Between Tourists and GDP Per Capita", facet_col='region', facet_col_wrap=3, height=600, width=400, log_x=True, facet_col_spacing=0.1, log_y=True, hover_name="country", facet_row_spacing=0.25)
+    fig.update_layout(showlegend=True,margin=dict(l=20,r=20,t=80,b=20),font=dict(size=12), title_x=0.3)
     fig.update_yaxes(showticklabels=True)
     fig.update_xaxes(showticklabels=True)
     col2.plotly_chart(fig)
@@ -870,10 +738,12 @@ if selected == 'Economic Impact of Dwelling':
     fig.update_xaxes(matches=None, showticklabels=True)
     col2.plotly_chart(fig)
     
+    col2.subheader('Incoming Arrivals in each Country by Region')
+
     col2.markdown('Europe and Central Asia: The trend is positive, with GDP rising with arrivals. High GDP countries like France fit, due to cultural tourism, and low GDP nations like Moldova align with growing visits. High GDP countries like Switzerland deviate, possibly due to diversification, while low GDP countries like Tajikistan lag due to infrastructure gaps. The bar chart shows a steady arrival increase, driven by travel networks. Sub-Saharan Africa: The trend is positive, with GDP growing with arrivals. High GDP countries like South Africa fit, boosted by safaris, and low GDP nations like Kenya align with wildlife tourism. High GDP countries like Mauritius deviate, possibly due to capacity limits, while low GDP countries like Burundi underperform due to conflict. The bar chart indicates a gradual arrival rise, supported by eco-tourism. Latin America and Caribbean: The trend is positive, with GDP increasing with arrivals. High GDP countries like Mexico fit, thanks to beaches, and low GDP nations like Haiti align with cultural growth. High GDP countries like Barbados deviate, possibly due to saturation, while low GDP countries like Haiti lag further due to instability. The bar chart shows a notable arrival increase, driven by cruises. East Asia and Pacific: The trend is positive, with GDP rising with arrivals. High GDP countries like Japan fit, due to cultural appeal, and low GDP nations like Laos align with eco-tourism. High GDP countries like Singapore deviate, possibly due to economic diversity, while low GDP countries like Vanuatu underperform due to isolation. The bar chart reflects a significant arrival rise, boosted by regional hubs. Middle East and North Africa: The trend is positive, with GDP growing with arrivals. High GDP countries like the UAE fit, due to luxury tourism, and low GDP nations like Jordan align with historical sites. High GDP countries like Qatar deviate, possibly due to oil focus, while low GDP countries like Yemen lag due to conflict. The bar chart shows a sharp arrival rise, driven by diversification. South Asia: The trend is positive, with GDP increasing with arrivals. High GDP countries like India fit, thanks to culture, and low GDP nations like Nepal align with mountaineering. High GDP countries like Sri Lanka deviate, possibly due to recovery issues, while low GDP countries like Afghanistan underperform due to security. The bar chart indicates a moderate arrival increase, supported by heritage. North America: The trend is positive, with GDP rising with arrivals. High GDP countries like the USA fit, driven by attractions, and low GDP nations like Belize align with eco-tourism. High GDP countries like Canada deviate, possibly due to broad economy, while low GDP countries like Haiti lag due to instability. The bar chart shows a strong arrival rise, fueled by global appeal. The overall increase in arrivals over time is true due to economic growth, travel technology, and tourism policies.')
     
-    fig=px.scatter(tourism.loc[tourism["region"].isin(regions_list),["region", "gdp","arv_1000", "country"]], x="arv_1000",y="gdp",color='region',labels=all_dict, title="", facet_col='region', facet_col_wrap=2, height=1000, width=400, log_x=True, facet_col_spacing=0.1, log_y=True, hover_name="country")
-    fig.update_layout(showlegend=True,margin=dict(l=20,r=20,t=50,b=20),font=dict(size=12))
+    fig=px.scatter(tourism.loc[tourism["region"].isin(regions_list),["region", "gdp","arv_1000", "country"]], x="arv_1000",y="gdp",color='region',labels=all_dict, title="Relationship Between Incoming Arrivals and GDP Per Capita", facet_col='region', facet_col_wrap=2, height=1000, width=400, log_x=True, facet_col_spacing=0.1, log_y=True, hover_name="country")
+    fig.update_layout(showlegend=True,margin=dict(l=20,r=20,t=50,b=20),font=dict(size=12), title_x=0.3)
     fig.update_yaxes(showticklabels=True)
     fig.update_xaxes(showticklabels=True)
     col2.plotly_chart(fig)
@@ -890,10 +760,12 @@ if selected == 'Economic Impact of Dwelling':
     fig.update_xaxes(matches=None, showticklabels=True)
     col2.plotly_chart(fig)
     
+    col2.subheader('Tourists Duration of Stay in each Country by Region')
+
     col2.markdown('Europe and Central Asia: The trend is negative, with longer stays linked to lower GDP. High GDP countries like Switzerland fit, due to high costs, and low GDP nations like Moldova align with budget tourism. High GDP countries like France deviate, thanks to cultural depth, while low GDP countries like Kyrgyzstan buck the trend with growing tourism. The bar chart shows moderate stay lengths, focusing on short visits. Sub-Saharan Africa: The trend is negative, with longer stays tied to lower GDP. High GDP countries like South Africa fit, due to cost concerns, and low GDP nations like Kenya align with budget travel. High GDP countries like Mauritius deviate, thanks to luxury stays, while low GDP countries like Tanzania grow with safari tourism. The bar chart indicates a slight stay increase, with varied impact. Latin America and Caribbean: The trend is negative, with longer stays linked to lower GDP. High GDP countries like Mexico fit, due to costs, and low GDP nations like Haiti align with budget tourism. High GDP countries like Barbados deviate, thanks to luxury, while low GDP countries like Jamaica grow with culture. The bar chart shows a notable stay rise, driven by experiential travel. East Asia and Pacific: The trend is negative, with longer stays tied to lower GDP. High GDP countries like Japan fit, due to high costs, and low GDP nations like Laos align with budget stays. High GDP countries like Australia deviate, thanks to diverse attractions, while low GDP countries like Vietnam grow with tourism. The bar chart reflects a significant stay increase, boosted by culture. Middle East and North Africa: The trend is negative, with longer stays linked to lower GDP. High GDP countries like the UAE fit, due to costs, and low GDP nations like Jordan align with budget travel. High GDP countries like Qatar deviate, thanks to luxury, while low GDP countries like Morocco grow with culture. The bar chart shows a sharp stay rise, driven by diversification. South Asia: The trend is negative, with longer stays tied to lower GDP. High GDP countries like India fit, due to costs, and low GDP nations like Nepal align with budget tourism. High GDP countries like Sri Lanka deviate, thanks to recovery, while low GDP countries like Bhutan grow with niche tourism. The bar chart indicates a moderate stay increase, supported by heritage. North America: The trend is negative, with longer stays linked to lower GDP. High GDP countries like the USA fit, due to costs, and low GDP nations like Belize align with budget travel. High GDP countries like Canada deviate, thanks to nature tourism, while low GDP countries like Haiti lag due to instability. The bar chart shows a strong stay rise, fueled by experience. The overall trend of increasing length of stay over time is true due to experiential travel and affordable options, though economic returns vary.')
     
-    fig=px.scatter(tourism.loc[tourism["region"].isin(regions_list),["region", "gdp","length", "country"]], x="length",y="gdp",color='region',labels=all_dict, title="", facet_col='region', facet_col_wrap=2, height=1000, width=400, log_x=True, facet_col_spacing=0.1, log_y=True, hover_name="country")
-    fig.update_layout(showlegend=True,margin=dict(l=20,r=20,t=50,b=20),font=dict(size=12))
+    fig=px.scatter(tourism.loc[tourism["region"].isin(regions_list),["region", "gdp","length", "country"]], x="length",y="gdp",color='region',labels=all_dict, title="Relationship Between Length of Stay and GDP Per Capita", facet_col='region', facet_col_wrap=2, height=1000, width=400, log_x=True, facet_col_spacing=0.1, log_y=True, hover_name="country")
+    fig.update_layout(showlegend=True,margin=dict(l=20,r=20,t=50,b=20),font=dict(size=12), title_x=0.3)
     fig.update_yaxes(showticklabels=True)
     fig.update_xaxes(showticklabels=True)
     col2.plotly_chart(fig)
@@ -910,12 +782,10 @@ if selected == 'Economic Impact of Dwelling':
     fig.update_xaxes(matches=None, showticklabels=True)
     col2.plotly_chart(fig)
 
-if selected == 'Tourism Line Plots by Country':
+if selected == 'Progressive Impact of Tourism':
 
-    st.title('Line Plots')
+    st.title('Progressive Impact of Tourism')
 
-    col3, col4 = st.columns([0.1, 5])
-    
     fig = px.choropleth(
         tourism.groupby(['code', 'country']).mean(numeric_only=True).reset_index(),
         locations='code',
@@ -928,7 +798,7 @@ if selected == 'Tourism Line Plots by Country':
         hover_name='country',
         projection='robinson'
         )
-    col4.plotly_chart(fig)
+    st.plotly_chart(fig)
     
     fig = px.choropleth(
         tourism.groupby(['code', 'country']).mean(numeric_only=True).reset_index(),
@@ -942,42 +812,44 @@ if selected == 'Tourism Line Plots by Country':
         hover_name='country',
         projection='robinson'
         )
-    col4.plotly_chart(fig)
+    st.plotly_chart(fig)
     
-    col4.markdown('High (e.g. Spain and France): The trend is strongly positive across decades, with GDP rising as tourist numbers grow. In Europe and Central Asia, cultural tourism (e.g. France) drives this, while the UAE in Middle East and North Africa benefits from luxury tourism. The 2010s peak reflects digital marketing and travel booms.')
+    col1, col2 = st.columns([1, 1])
+    
+    col1.markdown('High (e.g. Spain and France): The trend is strongly positive across decades, with GDP rising as tourist numbers grow. In Europe and Central Asia, cultural tourism (e.g. France) drives this, while the UAE in Middle East and North Africa benefits from luxury tourism. The 2010s peak reflects digital marketing and travel booms.')
     
     tour_dict = {'high': ["ESP", "FRA", "GRC", "CHE", "ARE", "HRV"],
                  'medium': ["CAN", "GBR", "NAM", "SVK", "MYS", "BRN"],
                  'low': ['TCD', 'BGD', 'COD', 'PAK', 'ETH', 'GIN']}
     
-    fig=px.line(tourism.loc[tourism['code'].isin(tour_dict['high']), ["decade","tourists_per_1000","code", 'year', 'country']].dropna().sort_values(by=['year', 'code']).reset_index(drop=True), x="year",y="tourists_per_1000",color="country",hover_name='country',labels=all_dict, height = 1000, width=400,title="", log_x=True, log_y = True)
+    fig=px.line(tourism.loc[tourism['code'].isin(tour_dict['high']), ["decade","tourists_per_1000","code", 'year', 'country']].dropna().sort_values(by=['year', 'code']).reset_index(drop=True), x="year",y="tourists_per_1000",color="country",hover_name='country',labels=all_dict, height = 300, width=400,title="", log_x=True, log_y = True)
+    fig.add_vline(x=2000, line_width=3, line_dash="dash", line_color="green")
+    fig.add_vline(x=2010, line_width=3, line_dash="dash", line_color="green")
+    fig.update_layout(showlegend=True,margin=dict(l=20,r=20,t=50,b=20),font=dict(size=12), title_x=0.3)
+    fig.update_yaxes(showticklabels=True)
+    fig.update_xaxes(showticklabels=True)
+    col1.plotly_chart(fig)
+    
+    col2.markdown('Medium (e.g. Canada and United Kingdom): The trend is positive but less pronounced, with GDP gains moderated by diverse economies. In North America and Europe, economic diversification (e.g. Canada) tempers tourism’s impact, with steady growth from the 2000s onward due to global travel networks.')
+    
+    fig=px.line(tourism.loc[tourism['code'].isin(tour_dict['medium']), ["decade","tourists_per_1000","code", 'year', 'country']].dropna().sort_values(by=['year', 'code']).reset_index(drop=True), x="year",y="tourists_per_1000",color="country",hover_name='country',labels=all_dict, height = 300, width=400,title="", log_x=True, log_y = True)
     fig.add_vline(x=2000, line_width=3, line_dash="dash", line_color="green")
     fig.add_vline(x=2010, line_width=3, line_dash="dash", line_color="green")
     fig.update_layout(showlegend=True,margin=dict(l=20,r=20,t=50,b=20),font=dict(size=12))
     fig.update_yaxes(showticklabels=True)
     fig.update_xaxes(showticklabels=True)
-    col4.plotly_chart(fig)
+    col2.plotly_chart(fig)
     
-    col4.markdown('Medium (e.g. Canada and United Kingdom): The trend is positive but less pronounced, with GDP gains moderated by diverse economies. In North America and Europe, economic diversification (e.g. Canada) tempers tourism’s impact, with steady growth from the 2000s onward due to global travel networks.')
-    
-    fig=px.line(tourism.loc[tourism['code'].isin(tour_dict['medium']), ["decade","tourists_per_1000","code", 'year', 'country']].dropna().sort_values(by=['year', 'code']).reset_index(drop=True), x="year",y="tourists_per_1000",color="country",hover_name='country',labels=all_dict, height = 1000, width=400,title="", log_x=True, log_y = True)
-    fig.add_vline(x=2000, line_width=3, line_dash="dash", line_color="green")
-    fig.add_vline(x=2010, line_width=3, line_dash="dash", line_color="green")
-    fig.update_layout(showlegend=True,margin=dict(l=20,r=20,t=50,b=20),font=dict(size=12))
-    fig.update_yaxes(showticklabels=True)
-    fig.update_xaxes(showticklabels=True)
-    col4.plotly_chart(fig)
-    
-    col4.markdown('Low (e.g. Tajikistan and Bangladesh): The trend is positive but weak, with low GDP countries in South Asia and Sub-Saharan Africa showing modest tourism growth (e.g. Pakistan’s cultural travel). Lags in the 1990s and 2000s stem from infrastructure and stability issues, with slight gains in the 2010s from emerging tourism.')
+    st.markdown('Low (e.g. Tajikistan and Bangladesh): The trend is positive but weak, with low GDP countries in South Asia and Sub-Saharan Africa showing modest tourism growth (e.g. Pakistan’s cultural travel). Lags in the 1990s and 2000s stem from infrastructure and stability issues, with slight gains in the 2010s from emerging tourism.')
 
     
-    fig=px.line(tourism.loc[tourism['code'].isin(tour_dict['low']), ["decade","tourists_per_1000","country", 'code', 'year']].dropna().sort_values(by=['year', 'code']).reset_index(drop=True), x="year",y="tourists_per_1000",color="country",hover_name='country',labels=all_dict, height = 1000, width=400,title="", log_x=True, log_y = True)
+    fig=px.line(tourism.loc[tourism['code'].isin(tour_dict['low']), ["decade","tourists_per_1000","country", 'code', 'year']].dropna().sort_values(by=['year', 'code']).reset_index(drop=True), x="year",y="tourists_per_1000",color="country",hover_name='country',labels=all_dict, height = 300, width=400,title="", log_x=True, log_y = True)
     fig.add_vline(x=2000, line_width=3, line_dash="dash", line_color="green")
     fig.add_vline(x=2010, line_width=3, line_dash="dash", line_color="green")
     fig.update_layout(showlegend=True,margin=dict(l=20,r=20,t=50,b=20),font=dict(size=12))
     fig.update_yaxes(showticklabels=True)
     fig.update_xaxes(showticklabels=True)
-    col4.plotly_chart(fig)
+    st.plotly_chart(fig)
     
     col5, col6 = st.columns([0.1, 5])
     
@@ -1001,10 +873,10 @@ if selected == 'Tourism Line Plots by Country':
     
     col6.markdown('High (e.g. San Marino and Macao): The trend is strongly positive, with GDP rising sharply with arrivals. In East Asia and Pacific (e.g. and Macao’s gaming tourism) and small Caribbean nations, the 2010s peak reflects cruise and luxury tourism growth, boosted by travel technology.')
     
-    fig=px.line(tourism.loc[tourism['code'].isin(arv_dict['high']), ["decade","arv_1000","code", 'year', 'country']].dropna().sort_values(by=['year', 'code']).reset_index(drop=True), x="year",y="arv_1000",color="country",hover_name='country',labels=all_dict, height = 1000, width=400,title="", log_x=True, log_y = True)
+    fig=px.line(tourism.loc[tourism['code'].isin(arv_dict['high']), ["decade","arv_1000","code", 'year', 'country']].dropna().sort_values(by=['year', 'code']).reset_index(drop=True), x="year",y="arv_1000",color="country",hover_name='country',labels=all_dict, height = 1000, width=400,title="Relationship Between Incoming Arrivals and GDP Per Capita", log_x=True, log_y = True)
     fig.add_vline(x=2000, line_width=3, line_dash="dash", line_color="green")
     fig.add_vline(x=2010, line_width=3, line_dash="dash", line_color="green")
-    fig.update_layout(showlegend=True,margin=dict(l=20,r=20,t=50,b=20),font=dict(size=12))
+    fig.update_layout(showlegend=True,margin=dict(l=20,r=20,t=50,b=20),font=dict(size=12), title_x=0.3)
     fig.update_yaxes(showticklabels=True)
     fig.update_xaxes(showticklabels=True)
     col6.plotly_chart(fig)
@@ -1052,10 +924,10 @@ if selected == 'Tourism Line Plots by Country':
     
     col8.markdown('High (e.g. Solomon Islands and Nepal): The trend is negative but less defined, with longer stays linked to lower GDP. In East Asia and Pacific and South Asia, the 2010s show a stay peak driven by experiential travel (e.g. Nepal’s mountaineering), though economic returns are limited. Regional effects, like Sub-Saharan Africa’s longer stays (e.g. Kenya) despite low GDP, suggest cultural or budget tourism influences.')
     
-    fig=px.line(tourism.loc[tourism['code'].isin(length_dict['high']), ["decade","length","code", 'year', 'country']].dropna().sort_values(by=['year', 'code']).reset_index(drop=True), x="year",y="length",color="country",hover_name='country',labels=all_dict, height = 1000, width=400,title="", log_x=True, log_y = True)
+    fig=px.line(tourism.loc[tourism['code'].isin(length_dict['high']), ["decade","length","code", 'year', 'country']].dropna().sort_values(by=['year', 'code']).reset_index(drop=True), x="year",y="length",color="country",hover_name='country',labels=all_dict, height = 1000, width=400,title="Relationship Between Length of Stay and GDP Per Capita", log_x=True, log_y = True)
     fig.add_vline(x=2000, line_width=3, line_dash="dash", line_color="green")
     fig.add_vline(x=2010, line_width=3, line_dash="dash", line_color="green")
-    fig.update_layout(showlegend=True,margin=dict(l=20,r=20,t=50,b=20),font=dict(size=12))
+    fig.update_layout(showlegend=True,margin=dict(l=20,r=20,t=50,b=20),font=dict(size=12), title_x=0.3)
     fig.update_yaxes(showticklabels=True)
     fig.update_xaxes(showticklabels=True)
     col8.plotly_chart(fig)
