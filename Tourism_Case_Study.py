@@ -15,7 +15,7 @@ from streamlit_option_menu import option_menu
 st.set_page_config(layout="wide")
 
 
-mypath = '/Users/boredom/Downloads/Data_Science/DataSets/'
+mypath = ''
 
 tourism = pd.read_csv(mypath + 'tour_econ_df.csv')
 
@@ -365,19 +365,6 @@ if selected=="Exploratory Analysis":
         
         hover_cols = np.setdiff1d(list(num_dict.values()), ['Year', color_var])
         hover_cols_df = [k for k, v in num_dict.items() if v in hover_cols]
-        
-        # color_scales = [
-        #     'Viridis', 'Cividis', 'Inferno', 'Magma', 'Plasma',
-        #     'Hot', 'Blackbody', 'Earth', 'Electric', 'Portland',
-        #     'Rainbow', 'Jet', 'Blues', 'Greens', 'Reds', 
-        #     'YlOrRd', 'YlGnBu', 'BuPu', 'OrRd', 'PuRd'
-        # ]
-        
-        # color_scale = col15.selectbox(
-        #     'Select color scale',
-        #     color_scales,
-        #     key=37
-        # )
     
         submitted = st.form_submit_button("Generate Choropleth Map")
         
@@ -452,7 +439,6 @@ if selected=="Exploratory Analysis":
         if submitted:
             user_cols=[col1_x_df, col1_y_df, col1_color_df]
             fig1=px.histogram(tourism[user_cols].dropna(), x=col1_x_df, y=col1_y_df, color=col1_color_df, nbins=bins, barmode='group', histfunc=col1_px_histfunc, labels=all_dict, log_y=col1_log_y, title=f'{col1_y} by {col1_x}')
-            #fig.update_xaxes(type='category', categoryorder='category ascending')
             fig1.update_layout(title_x=0.28)
             col2.plotly_chart(fig1)
             
@@ -575,7 +561,6 @@ if selected=="Exploratory Analysis":
         y_var = col17.selectbox('Select y-axis variable', np.setdiff1d(list(num_dict.values()), x_var), key=39)
         y_var_df = [k for k, v in num_dict.items() if v == y_var][0]
         
-        # User selects color variable (categorical)
         color_var = col17.selectbox('Select color variable', np.setdiff1d(list(cat_dict.values()), 'Country'), key=40)
         color_var_df = [k for k, v in cat_dict.items() if v == color_var][0]
         
@@ -963,132 +948,6 @@ if selected == 'Progressive Impact of Tourism':
 
 
 
-
-
-
-
-
-
-
-    
-    
-    
-    
-    
-        
-    # fig=px.scatter(tourism[["decade","gdp","tourists_per_1000","country"]].dropna(),x="tourists_per_1000",y="gdp",color="decade",hover_name='country',labels={'gdp': 'GDP', 'tourists_per_1000': 'Tourists (Per 1000)', 'decade' : 'Decade'}, height = 1000, width=400,title="", log_x=True, log_y = True)
-    # fig.update_layout(showlegend=True,margin=dict(l=20,r=20,t=50,b=20),font=dict(size=12))
-    # fig.update_yaxes(showticklabels=True)
-    # fig.update_xaxes(showticklabels=True)
-    # col4.plotly_chart(fig)
-    
-    # col4.markdown('outliers in kuwait, tajikstan, turkmenistan, bangladesh, libya, sudan, angola')
-    
-
-    
-    # col5, col6 = st.columns([0.1, 5])
-    
-    # col6.markdown('arv_1000 for country by decade')
-    
-    # fig=px.scatter(tourism[["decade","gdp","arv_1000","country"]].dropna(),x="arv_1000",y="gdp",color="decade",hover_name='country',labels=all_dict, height = 1000, width=400,title="", log_x=True, log_y = True)
-    # fig.update_layout(showlegend=True,margin=dict(l=20,r=20,t=50,b=20),font=dict(size=12))
-    # fig.update_yaxes(showticklabels=True)
-    # fig.update_xaxes(showticklabels=True)
-    # col6.plotly_chart(fig)
-    
-    # fig=px.scatter(tourism[["decade","gdp","arv_1000","country"]].dropna().groupby(['country', 'decade']).mean().reset_index(),x="arv_1000",y="gdp",color="decade",hover_name='country',labels=all_dict, height = 1000, width=400,title="", log_x=True, facet_col = "decade", facet_col_wrap = 2, facet_col_spacing=0.1, log_y = True, facet_row_spacing=0.1)
-    # fig.update_layout(showlegend=True,margin=dict(l=20,r=20,t=50,b=20),font=dict(size=12))
-    # fig.update_yaxes(showticklabels=True)
-    # fig.update_xaxes(showticklabels=True)
-    # col6.plotly_chart(fig)
-    
-
-    
-    
-    # col7, col8 = st.columns([0.1, 5])
-    
-    # col8.markdown('length for country by decade')
-    
-    # fig=px.scatter(tourism[["decade","gdp","length","country"]].dropna(),x="length",y="gdp",color="decade",hover_name='country',labels=all_dict, height = 1000, width=400,title="", log_x=True, log_y = True)
-    # fig.update_layout(showlegend=True,margin=dict(l=20,r=20,t=50,b=20),font=dict(size=12))
-    # fig.update_yaxes(showticklabels=True)
-    # fig.update_xaxes(showticklabels=True)
-    # col8.plotly_chart(fig)
-    
-    # fig=px.scatter(tourism[["decade","gdp","length","country"]].dropna().groupby(['country', 'decade']).mean().reset_index(),x="length",y="gdp",color="decade",hover_name='country',labels=all_dict, height = 1000, width=400,title="", log_x=True, facet_col = "decade", facet_col_wrap = 2, facet_col_spacing=0.1, log_y = True, facet_row_spacing=0.1)
-    # fig.update_layout(showlegend=True,margin=dict(l=20,r=20,t=50,b=20),font=dict(size=12))
-    # fig.update_yaxes(showticklabels=True)
-    # fig.update_xaxes(showticklabels=True)
-    # col8.plotly_chart(fig)
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    # fig32=px.scatter(tourism[["region","gdp","tourists_per_1000","country"]].dropna().groupby(['country', 'region']).mean().reset_index(),x="tourists_per_1000",y="gdp",color="region",hover_name='country',labels=all_dict, height = 1000, width=400,title="", log_x=True, facet_col = "region", facet_col_wrap = 2, facet_col_spacing=0.1, log_y = True, facet_row_spacing=0.1)
-    # fig32.update_layout(showlegend=True,margin=dict(l=20,r=20,t=50,b=20),font=dict(size=12))
-    # fig32.update_yaxes(showticklabels=True)
-    # fig32.update_xaxes(showticklabels=True)
-    # col2.plotly_chart(fig32)
-    
-    # fig=px.scatter(tourism[["region","gdp","tourists_per_1000","country"]].dropna(),x="tourists_per_1000",y="gdp",color="region",hover_name='country',labels=all_dict, height = 1000, width=400,title="", log_x=True, log_y = True)
-    # fig.update_layout(showlegend=True,margin=dict(l=20,r=20,t=50,b=20),font=dict(size=12))
-    # fig.update_yaxes(showticklabels=True)
-    # fig.update_xaxes(showticklabels=True)
-    # col2.plotly_chart(fig)
-    
-    # col5, col6 = ([0.1, 5])
-    
-    # fig=px.scatter(tourism[["region","gdp","arv_1000","country"]].dropna(),x="arv_1000",y="gdp",color="region",hover_name='country',labels=all_dict, height = 1000, width=400,title="", log_x=True, log_y = True)
-    # fig.update_layout(showlegend=True,margin=dict(l=20,r=20,t=50,b=20),font=dict(size=12))
-    # fig.update_yaxes(showticklabels=True)
-    # fig.update_xaxes(showticklabels=True)
-    # col6.plotly_chart(fig)
-    
-    # fig=px.scatter(tourism[["region","gdp","arv_1000","country"]].dropna().groupby(['country', 'region']).mean().reset_index(),x="arv_1000",y="gdp",color="region",hover_name='country',labels=all_dict, height = 2000, width=400,title="", log_x=True, facet_col = "region", facet_col_wrap = 2, facet_col_spacing=0.1, log_y = True, facet_row_spacing=0.1)
-    # fig.update_layout(showlegend=True,margin=dict(l=20,r=20,t=50,b=20),font=dict(size=12))
-    # fig.update_yaxes(showticklabels=True)
-    # fig.update_xaxes(showticklabels=True)
-    # col6.plotly_chart(fig)
-    
-    # col7, col8 = ([0.1, 5])
-    
-    # fig30=px.scatter(tourism[["region","gdp","length","country"]].dropna(),x="length",y="gdp",color="region",hover_name='country',labels=all_dict, height = 2000, width=400,title="", log_x=True, facet_col = "region", facet_col_wrap = 2, facet_col_spacing=0.1, log_y = True, facet_row_spacing=0.1)
-    # fig30.update_layout(showlegend=True,margin=dict(l=20,r=20,t=50,b=20),font=dict(size=12))
-    # fig30.update_yaxes(showticklabels=True)
-    # fig30.update_xaxes(showticklabels=True)
-    # col8.plotly_chart(fig30)
-    
-    # fig=px.scatter(tourism[["region","gdp","length","country"]].dropna(),x="length",y="gdp",color="region",hover_name='country',labels=all_dict, height = 1000, width=400,title="", log_x=True, log_y = True)
-    # fig.update_layout(showlegend=True,margin=dict(l=20,r=20,t=50,b=20),font=dict(size=12))
-    # fig.update_yaxes(showticklabels=True)
-    # fig.update_xaxes(showticklabels=True)
-    # col8.plotly_chart(fig)
-    
-    # col8.markdown('slight linear moderate negative correlation for Europe and Central Asia, Middle East and North Africa, and East Asia and Pacific')
-    
-    # fig=px.scatter(tourism[["region","gdp","length","country"]].dropna().groupby(['country', 'region']).mean().reset_index(),x="length",y="gdp",color="region",hover_name='country',labels=all_dict, height = 2000, width=400,title="", log_x=True, facet_col = "region", facet_col_wrap = 2, facet_col_spacing=0.1, log_y = True, facet_row_spacing=0.1)
-    # fig.update_layout(showlegend=True,margin=dict(l=20,r=20,t=50,b=20),font=dict(size=12))
-    # fig.update_yaxes(showticklabels=True)
-    # fig.update_xaxes(showticklabels=True)
-    # col8.plotly_chart(fig)
-    
-    
-
-
 if selected == 'Conclusion':
     
     st.title('Conclusion')
@@ -1097,218 +956,7 @@ if selected == 'Conclusion':
     
     
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
     if selected == 'Bibliography':
         st.title('Bibliography')
         
         st.markdown('The dataset is downloaded from https://www.kaggle.com/datasets/amirjdai/tourism')
-#         col1.markdown('Bibliography on Tourisms Economic Impact
-
-# Below is a curated bibliography of sources that discuss the correlation between tourism and economic indicators such as GDP, tourist arrivals, country, and region. Each source provides expert insights into how tourism affects economies, with a focus on recent studies and data-driven analyses.
-
-
-
-
-
-# World Travel & Tourism Council (WTTC). (2021). Travel & Tourism Economic Impact Research (EIR).
-
-
-
-
-
-# Description: This report, in collaboration with Oxford Economics, provides a comprehensive analysis of the economic impact of travel and tourism across 184 countries and 28 regions. It highlights correlations between tourism’s contribution to global GDP (US$10.9 trillion in 2024, 10% of global GDP) and tourist arrivals, emphasizing regional variations and employment impacts (357 million jobs globally). The report includes data from 2015–2025 and forecasts to 2035, showing trends in GDP contribution and international visitor spending by country and region.
-
-
-
-# Relevance: Discusses correlations between GDP, tourist arrivals, and regional economic contributions, with detailed metrics for specific countries.
-
-
-
-# Source: WTTC Research Hub, wttc.org
-
-
-
-# Behsudi, A. (2021). Impact of the Pandemic on Tourism. IMF Finance & Development.
-
-
-
-
-
-# Description: This IMF study examines the economic impact of the COVID-19 pandemic on tourism-dependent economies, correlating tourist arrivals with GDP declines in 2020. It notes that tourism-dependent countries (e.g., African and Caribbean nations) experienced GDP contractions of up to 12–21%, compared to global averages, due to a drop in arrivals (65% globally in early 2021). The study highlights specific countries like Barbados and Seychelles, linking tourist arrivals to GDP and employment.
-
-
-
-# Relevance: Provides evidence of the correlation between tourist arrivals and GDP declines, with country-specific data.
-
-
-
-# Source: www.imf.org
-
-
-
-# Statista. (2025). Travel and Tourism: Contribution to Global GDP 2023.
-
-
-
-
-
-# Description: This report details the global contribution of travel and tourism to GDP (9.9 trillion USD in 2023, 9.1% of global GDP) and correlates it with international tourist arrivals by country and region. It highlights leading markets like the United States, China, and France (100 million arrivals in 2023), noting how arrivals drive GDP contributions. Forecasts for 2024 and 2034 are included, showing expected GDP growth tied to tourism recovery.
-
-
-
-# Relevance: Correlates GDP with tourist arrivals across countries and regions, with a focus on recent data and projections.
-
-
-
-# Source: www.statista.com
-
-
-
-# Nhamo, G., Dube, K., & Chikodzi, D. (2021). Tourism Recovery and the Economic Impact: A Panel Assessment. ScienceDirect.
-
-
-
-
-
-# Description: This study uses system-GMM estimation to analyze the economic impact of tourism on 46 countries, correlating tourist arrivals per capita and tourism receipts with GDP growth. It finds that a 1% increase in tourism receipts per capita boosts GDP per capita by 0.31% in the long run, with stronger effects in countries with higher tourism specialization. The study also explores non-linear relationships, showing diminishing returns at high tourism levels.
-
-
-
-# Relevance: Establishes a direct correlation between tourist arrivals, tourism receipts, and GDP growth across multiple countries.
-
-
-
-# Source: www.sciencedirect.com
-
-
-
-# Fahimi, A., Akadiri, S. S., & others. (2022). Tourism and Economic Growth: A Global Study on Granger Causality and Wavelet Coherence. PMC.
-
-
-
-
-
-# Description: This global study of 105 countries uses Granger causality and wavelet coherence to explore bidirectional causality between tourism (measured by arrivals and receipts) and GDP. It finds that tourism growth drives economic growth in most countries, with stronger correlations in regions like Europe and the Americas (2010–2017). The study highlights how economic growth also boosts tourism, creating a feedback loop.
-
-
-
-# Relevance: Demonstrates bidirectional correlations between tourist arrivals, tourism revenue, and GDP across regions and countries.
-
-
-
-# Source: www.ncbi.nlm.nih.gov
-
-
-
-# Brida, J. G., & others. (2020). On the Empirical Relationship Between Tourism and Economic Growth. ScienceDirect.
-
-
-
-
-
-# Description: This study analyzes the dynamics of tourism and economic growth in 80 countries from 1995–2016, using per capita GDP growth and international tourist arrivals per inhabitant. It identifies clusters of countries with high and low tourism performance, showing how tourism specialization correlates with GDP growth. The study notes that countries with higher tourist arrivals per capita (e.g., Uruguay vs. Brazil) have stronger economic impacts relative to their population size.
-
-
-
-# Relevance: Correlates tourist arrivals per capita with GDP growth, highlighting country-specific and regional differences.
-
-
-
-# Source: www.sciencedirect.com
-
-
-
-# World Bank. (2025). Tourism and Competitiveness.
-
-
-
-
-
-# Description: This report emphasizes tourism’s role in economic development, contributing US$10.9 trillion to global GDP in 2024 (10% of global GDP) and supporting 357 million jobs. It correlates international visitor spending (US$1.9 trillion) with GDP and job creation in countries like Sierra Leone, where tourism doubled arrivals and created 17,000 jobs. The report also discusses regional impacts, particularly in small island nations.
-
-
-
-# Relevance: Links tourist arrivals and spending to GDP and employment, with a focus on developing countries and regions.
-
-
-
-# Source: www.worldbank.org
-
-
-
-# UN Tourism. (2024). International Tourism to Reach Pre-Pandemic Levels in 2024. UNWTO.
-
-
-
-
-
-# Description: This report provides data on tourism’s economic recovery, estimating tourism direct GDP at US$3.3 trillion in 2023 (3% of global GDP). It correlates international tourist arrivals (1.3 billion in 2023, 88% of 2019 levels) with GDP contributions across regions, noting that the Middle East exceeded 2019 arrival levels by 22%. The report highlights how arrivals drive economic recovery in specific countries and regions.
-
-
-
-# Relevance: Correlates tourist arrivals with tourism’s direct GDP contribution, with regional and country-specific insights.
-
-
-
-# Source: www.unwto.org
-
-
-
-# Kim, Y. R., & Song, H. (2022). Toward an Accurate Assessment of Tourism Economic Impact: A Systematic Literature Review. ScienceDirect.
-
-
-
-
-
-# Description: This systematic review (1975–2020) evaluates methods for assessing tourism’s economic impact, emphasizing the need for dynamic causal models to link tourism (arrivals and receipts) with GDP. It critiques traditional approaches and highlights studies showing positive correlations between tourism receipts and GDP in countries like Mexico and Romania, with regional variations.
-
-
-
-# Relevance: Discusses correlations between tourist arrivals, tourism receipts, and GDP, with a focus on methodological advancements.
-
-
-
-# Source: www.sciencedirect.com
-
-
-
-# Mize. (2025). The Economic Impact of Tourism: What You Need to Know.
-
-
-
-
-
-# Description: This blog post outlines tourism’s economic contributions, noting its 10.4% share of global GDP in 2019 (US$10 trillion) and 7.6% in 2022. It correlates tourist arrivals with job creation (22 million jobs in 2022) and GDP in countries like South Africa (3.7% of GDP). The report emphasizes how tourist spending drives economic activity across regions.
-
-
-
-# Relevance: Links tourist arrivals and spending to GDP and employment, with country-specific examples.
-
-
-
-# Source: mize.tech')
-    
