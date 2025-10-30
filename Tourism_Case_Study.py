@@ -118,7 +118,7 @@ if selected=='Abstract':
     
     st.markdown('<h1><b>WORK IN PROGRESS</b></h1>', unsafe_allow_html=True)
     
-    st.markdown('<h4>Please comeback in 4-5 months to view the final version.</h4>', unsafe_allow_html=True)
+    st.markdown('<h4>Please comeback in 2-3 months to view the final version.</h4>', unsafe_allow_html=True)
 
 
 
