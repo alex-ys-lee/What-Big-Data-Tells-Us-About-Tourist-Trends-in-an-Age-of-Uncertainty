@@ -15,7 +15,7 @@ from streamlit_option_menu import option_menu
 st.set_page_config(layout="wide")
 
 
-mypath = ''
+mypath = '/Users/boredom/Downloads/Data_Science/DataSets/'
 
 tourism = pd.read_csv(mypath + 'tour_econ_df.csv')
 
@@ -100,7 +100,7 @@ with st.sidebar:
 if selected=='Abstract':
     st.title("Tourism Intensity, Duration, and Return: Global Patterns 1995–2020")
     
-    st.markdown('Tourism is a vital component of global economies, significantly influencing gross domestic product (GDP), employment, and regional development through visitor spending and infrastructure growth. Many countries and regions thrive on tourism, but what are the key factors that drive its economic impact? Why do some destinations generate greater economic benefits than others? This case study leverages a comprehensive dataset to explore the scientific and economic factors behind tourism’s influence, examining correlations between GDP, tourist arrivals, length of stay, and regional variations. By analyzing data from 1995 to 2020, this study aims to uncover patterns that explain tourism’s economic contributions, identify the factors that enhance economic outcomes, and understand regional differences in tourism-driven growth. Let’s dive into the data to reveal the dynamics of tourism’s economic impact!')
+    st.markdown('Tourism is a vital component of global economies, significantly influencing gross domestic product (GDP), employment, and regional development through visitor spending and infrastructure growth. Many countries and regions thrive on tourism, but what are the key factors that drive its economic impact? Why do some destinations generate greater economic benefits than others? This case study leverages a comprehensive dataset to explore the scientific and economic factors behind tourism’s influence, examining correlations between gdp per capita, tourist arrivals, length of stay, regional variations, and year. By analyzing data from 1995 to 2020, this study aims to uncover patterns that explain tourism’s economic contributions, identify the factors that enhance economic outcomes, and understand regional differences in tourism-driven growth. Let’s dive into the data to reveal the dynamics of tourism’s economic impact!')
     
     st.subheader('Questions to be Answered')
     
@@ -771,6 +771,19 @@ if selected == 'Regional Impact of Tourism':
 if selected == 'Progressive Impact of Tourism':
 
     st.title('Progressive Impact of Tourism')
+    
+    st.markdown('<p style="font-size: 23px;">Yearly</p>', unsafe_allow_html=True)        
+    
+    st.markdown('---')
+    
+    st.markdown('<div style= text-align: center; , style= font-size: 40px; > GDP Per Capita </div>', unsafe_allow_html=True)
+    
+    st.markdown('---')
+    
+    
+    col19, col20 = st.columns([1, 2])
+    
+    col19.markdown('This choropleth visualizes GDP Per Capita globally, with darker shades indicating higher income levels (up to 40k+ USD). High-income nations are heavily concentrated in North America and Western/Central Europe, forming a clear "Northern Hemisphere wealth cluster." Outliers in the Southern Hemisphere include Australia, New Zealand, and select Gulf states like Saudi Arabia and Oman. Mid-range GDP (15k–25k) is prominent across much of South America (e.g. Brazil, Argentina, Chile), while Sub-Saharan Africa and parts of South/Southeast Asia dominate the lowest tiers (<10k), reflecting persistent global income disparities.')
 
     fig = px.choropleth(
         tourism.groupby(['code', 'country']).mean(numeric_only=True).reset_index(),
@@ -780,12 +793,16 @@ if selected == 'Progressive Impact of Tourism':
         color="gdp", 
         color_continuous_scale='sunset',
         labels=all_dict,
-        title='GDP Per Capita',
+        title='Spread of GDP Per Capita in the World',
         hover_name='country',
         projection='robinson'
         )
-    fig.update_layout(showlegend=True,margin=dict(l=0,r=210,t=65,b=65),font=dict(size=12), title_x=0.3)
-    st.plotly_chart(fig)
+    fig.update_layout(showlegend=True, margin=dict(l=0,r=210,t=55,b=65), font=dict(size=12), title_x=0.15)
+    col20.plotly_chart(fig)
+    
+    col21, col22 = st.columns([1, 2])
+    
+    col21.markdown('This map displays tourists per 1,000 population, revealing tourism intensity relative to local population size. The highest rates (>250 per 1,000) are strikingly concentrated in small, high-income island and microstates (e.g., Iceland, Malta, Bahamas, Cyprus), alongside tourism-dependent economies like Croatia, Austria, and New Zealand. Western Europe shows widespread moderate-to-high intensity (100–200), while North America, Australia, and East Asia (Japan, South Korea) fall in the mid-range. Large parts of Africa, South Asia, and Latin America register very low values, indicating either limited tourism infrastructure or large populations diluting per-capita metrics.')
     
     fig = px.choropleth(
         tourism.groupby(['code', 'country']).mean(numeric_only=True).reset_index(),
@@ -799,8 +816,8 @@ if selected == 'Progressive Impact of Tourism':
         hover_name='country',
         projection='robinson'
         )
-    st.plotly_chart(fig)
-    fig.update_layout(showlegend=True,margin=dict(l=20,r=20,t=50,b=20),font=dict(size=12), title_x=0.3)
+    fig.update_layout(showlegend=True, margin=dict(l=10,r=20,t=50,b=60), font=dict(size=12), title_x=0.38)
+    col22.plotly_chart(fig)
     
     col1, col2 = st.columns([1, 1])
     
@@ -839,7 +856,9 @@ if selected == 'Progressive Impact of Tourism':
     fig.update_xaxes(showticklabels=True)
     st.plotly_chart(fig)
     
-    col5, col6 = st.columns([0.1, 5])
+    col5, col6 = st.columns([1, 1])
+    
+    col5.markdown('This choropleth illustrates international tourist arrivals per 1,000 population, emphasizing destinations with the heaviest relative inbound tourism. The darkest shades (>1,000 arrivals per 1,000 people) highlight extreme tourism hubs like Macao, Hong Kong, Singapore, and Malta — urban or compact destinations with massive visitor throughput. Europe dominates the high-to-moderate range (500–1,000), particularly Scandinavia, the Mediterranean, and the Alps. North America and Oceania show moderate intensity, while Africa, South Asia, and interior South America remain in the lowest tiers, underscoring geographic and economic barriers to mass tourism access.')
     
     fig8 = px.choropleth(
         tourism.groupby(['code', 'country']).sum(numeric_only=True).reset_index(),
@@ -853,6 +872,7 @@ if selected == 'Progressive Impact of Tourism':
         hover_name='country',
         projection='robinson'
         )
+    fig8.update_layout(showlegend=True, margin=dict(l=10,r=20,t=50,b=60), font=dict(size=12), title_x=0.38)
     col6.plotly_chart(fig8)
 
     col7, col8 = st.columns([1, 1])
@@ -891,9 +911,9 @@ if selected == 'Progressive Impact of Tourism':
     fig.update_xaxes(showticklabels=True)
     st.plotly_chart(fig)
     
-
+    col9, col10 = st.columns([1, 1])
     
-    col9, col10 = st.columns([0.1, 5])
+    col10.markdown('This map shows average length of stay (in nights) for international tourists, with darker colors indicating longer durations. The longest stays (>100 nights) are rare but visible in select Middle Eastern (e.g., UAE, Qatar) and African nations, possibly reflecting expatriate workers or long-term visitors rather than typical tourists. Europe and Russia dominate mid-to-high ranges (50–100 nights), potentially driven by extended vacation cultures, retirement travel, or intra-regional mobility. North America, East Asia, and Oceania cluster in the moderate range (30–50 nights), while much of Sub-Saharan Africa, South Asia, and Southeast Asia show the shortest stays (<30 nights), likely due to shorter regional trips, business travel, or transit tourism.')
     
     fig7 = px.choropleth(
         tourism.groupby(['code', 'country']).sum(numeric_only=True).reset_index(),
@@ -907,6 +927,7 @@ if selected == 'Progressive Impact of Tourism':
         hover_name='country',
         projection='robinson'
         )
+    fig7.update_layout(showlegend=True, margin=dict(l=10,r=20,t=50,b=60), font=dict(size=12), title_x=0.38)
     col10.plotly_chart(fig7)
     
     col11, col12 = st.columns([1, 1])
@@ -951,7 +972,7 @@ if selected == 'Conclusion':
     
     st.title('Conclusion')
     
-    st.markdown('<h4>Work in progress. Please check back in two months</h4>', unsafe_allow_html=True)
+    st.markdown('<h4>Work in progress. Please check back in one or two months</h4>', unsafe_allow_html=True)
     
 
     
@@ -982,9 +1003,10 @@ if selected == 'Conclusion':
     
     
     
-    if selected == 'Bibliography':
-        st.title('Bibliography')
+if selected == 'Bibliography':
         
-        st.markdown('The dataset is downloaded from https://www.kaggle.com/datasets/amirjdai/tourism')
-        
-        st.markdown('<h4>Work in progress. Please check back in two months</h4>', unsafe_allow_html=True)
+    st.title('Bibliography')
+    
+    st.markdown('The dataset is downloaded from https://www.kaggle.com/datasets/amirjdai/tourism')
+    
+    st.markdown('<h4>Work in progress. Please check back in one or two months</h4>', unsafe_allow_html=True)
