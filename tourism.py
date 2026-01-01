@@ -15,7 +15,7 @@ from streamlit_option_menu import option_menu
 st.set_page_config(layout="wide")
 
 
-mypath = ''
+mypath = '/Users/boredom/Downloads/Data_Science/DataSets/'
 
 tourism = pd.read_csv(mypath + 'tour_econ_df.csv')
 
@@ -90,9 +90,9 @@ range_sum_dict = {'tourists_per_1000' : [1, 10000],
 with st.sidebar: 
 	selected = option_menu(
 		menu_title = 'Navigation Pane',
-		options = ['Abstract', 'Background Information', 'Data Cleaning','Exploratory Analysis', 'Decennial Impact of Tourism', 'Regional Impact of Tourism', 'Progressive Impact of Tourism', 'Conclusion', 'Bibliography'],
+		options = ['Abstract', 'Background Information', 'Data Cleaning','Exploratory Analysis', 'Decennial Impact of Tourism', 'Regional Impact of Tourism', 'Progressive Impact of Tourism', 'Defying Wealth: Extended Tourist Visits', 'Conclusion', 'Bibliography'],
 		menu_icon = 'list',
-		icons = ['bookmark-check', 'book', 'box', 'map', 'map', 'file', 'map', 'bar-chart', 'check2-circle'],
+		icons = ['bookmark-check', 'book', 'box', 'map', 'map', 'file', 'map', 'question-mark', 'bar-chart', 'check2-circle'],
 		default_index = 0,
 		)
 
@@ -105,16 +105,6 @@ if selected=='Abstract':
     st.subheader('Questions to be Answered')
     
     st.markdown('To what extent does the length of tourist stay reflect GDP per capita, and why do certain low-income regions—particularly in Sub-Saharan Africa and South Asia—consistently defy this trend with longer average stays?')
-
-    st.markdown('How do small island developing states (SIDS) achieve disproportionately high tourism arrival intensities despite limited land area and population—and what does this reveal about the scalability of tourism-led development?')
-    
-    st.markdown('Are high-income countries becoming "tourism-saturated", as suggested by declining growth rates in arrivals per 1000 people after 2010, while emerging economies in Southeast Asia and the Middle East accelerate rapidly?')
-
-    st.markdown('What underlying geopolitical, infrastructural, and marketing factors explain why some landlocked, low-GDP nations (e.g., Nepal, Eswatini) outperform coastal peers in tourism density—and can these models be replicated?')
-    
-    st.markdown('Does the sharp decline in tourism metrics across nearly all countries in 2020 represent a structural reset in global travel behavior, or merely a temporary shock—and how do pre- and post-pandemic trajectories differ by region and income level?')
-
-    st.markdown('Which countries dominate inbound versus outbound tourism flows, and what do imbalances in this ratio reveal about global economic inequality, cultural influence, and mobility privilege?')
     
     st.markdown('<h1><b>WORK IN PROGRESS</b></h1>', unsafe_allow_html=True)
     
@@ -968,6 +958,273 @@ if selected == 'Progressive Impact of Tourism':
     fig.update_yaxes(showticklabels=True)
     fig.update_xaxes(showticklabels=True)
     st.plotly_chart(fig)
+    
+if selected == 'Defying Wealth: Extended Tourist Visits':
+    
+    st.title('Defying Wealth: Extended Tourist Visits')
+    
+    st.subheader('To what extent does the length of tourist stay reflect GDP per capita, and why do certain low-income regions—particularly in Sub-Saharan Africa and South Asia—consistently defy this trend with longer average stays?')
+    
+    st.markdown('##### Through an assimilation of literature and data visualizations, two potential causes of longer average are affordability and eco-tourism.')
+
+    df = tourism[['country', 'code', 'year', 'arv_1000', 'tourists_per_1000', 
+             'purpose_biz_profesh', 'expd', 'length', 'gdp', 'gdp_cat']].copy()
+    df.rename(columns={'expd': 'expd_int'}, inplace=True)
+    
+    # Clean data: keep countries with at least 5 years of length & gdp data
+    df_clean = df.dropna(subset=['length', 'gdp', 'code'])
+    country_counts = df_clean['code'].value_counts()
+    final_list = country_counts[country_counts >= 5].index.tolist()
+    df_clean = df_clean[df_clean['code'].isin(final_list)].copy()
+    
+    # Dominant GDP category per country
+    df_clean['gdp_cat_mode'] = df_clean.groupby('code')['gdp_cat'] \
+        .transform(lambda x: x.mode()[0] if not x.mode().empty else np.nan)
+    
+    # Focus countries
+    selected_codes = ['KEN', 'TZA', 'VUT', 'BEN', 'SLE', 'MAR', 'LSO', 'MDG', 'PNG']
+    df_selected = df_clean[df_clean['code'].isin(selected_codes)].copy()
+    
+    # Country averages for scatter/bar plots
+    avg_df = df_clean.groupby(['code', 'country']).agg({
+        'length': 'mean',
+        'gdp': 'mean',
+        'arv_1000': 'mean',
+        'tourists_per_1000': 'mean',
+        'purpose_biz_profesh': 'mean',
+        'expd_int': 'mean',
+        'gdp_cat_mode': 'first'
+    }).reset_index()
+    
+    # Affordability proxy
+    avg_df['arrivals_total'] = avg_df['arv_1000'] * 1000
+    avg_df['total_nights'] = avg_df['arrivals_total'] * avg_df['length']
+    avg_df['daily_exp_per_tourist'] = np.where(
+        avg_df['total_nights'] > 0,
+        avg_df['expd_int'] / avg_df['total_nights'],
+        np.nan
+    )
+    
+    avg_selected = avg_df[avg_df['code'].isin(selected_codes)].copy()
+    
+    # Yearly data for time series
+    df_time = df_selected.dropna(subset=['arv_1000', 'year'])
+    
+    # ================ Streamlit App ================
+    st.markdown("Research Focus: To what extent does tourist length of stay reflect GDP per capita, and why do certain low-income countries (especially in Sub-Saharan Africa and the Pacific) consistently show longer average stays?")
+    st.markdown("### Key Insights Summary")
+    st.markdown("The analysis strongly supports **affordability** as the primary driver of longer tourist stays in most focus countries: lower daily costs allow budget-conscious leisure travelers to extend their trips. For countries where daily expenditure appears higher (e.g., Tanzania, Morocco), **ecotourism and immersive experiences** (safaris, wildlife viewing, cultural festivals) play a complementary role, encouraging longer visits regardless of cost. Overall, low-income regions attract fewer but longer-staying visitors, relying on niche, experiential tourism rather than high-volume short stays.")
+    # Graph 1
+    st.markdown("##### Graph 1: Length of Stay vs. GDP per Capita")
+    st.markdown("**Why this graph matters:** This scatter plot establishes the core relationship (or lack thereof) between economic wealth and tourist stay duration across countries. It directly addresses our research question by revealing whether higher GDP per capita typically leads to shorter stays, and highlights why certain low-income countries in Sub-Saharan Africa and the Pacific defy this pattern with exceptionally long visits. #ResearchCore #GDPvsStay #GlobalTrend #AffordabilityClue #OutlierDetection")
+    st.markdown("**What the graph shows:** Each point represents a country's average length of stay (y-axis) against GDP per capita (x-axis, log scale). Points are colored by dominant GDP category. Selected countries (KEN, TZA, VUT, etc.) are highlighted with red stars. We observe a general negative trend globally, but our focus countries cluster in the low-GDP, high-length quadrant.")
+    fig1 = px.scatter(
+        avg_df,
+        x='gdp',
+        y='length',
+        color='gdp_cat_mode',
+        hover_data=['country', 'code'],
+        log_x=True,
+        title='Length of Stay vs. GDP per Capita (All Countries with Sufficient Data)',
+        labels={'gdp': 'GDP per Capita (USD, log scale)', 'length': 'Average Length of Stay (days)'},
+        height=600,
+        opacity=0.7,
+        color_discrete_sequence=px.colors.sequential.Plasma_r
+    )
+    fig1.add_scatter(
+        x=avg_selected['gdp'],
+        y=avg_selected['length'],
+        mode='markers+text',
+        marker=dict(size=30, color='crimson', symbol='star-diamond', line=dict(width=3, color='darkred')),
+        text=avg_selected['code'],
+        textposition='top center',
+        textfont=dict(size=12, color='white'),
+        name='Focus Countries (Average)'
+    )
+    fig1.update_traces(marker=dict(line=dict(width=1, color='white')))
+    fig1.update_layout(
+        legend_title="Income Level",
+        title_x=0.5,
+        plot_bgcolor='rgba(0,0,0,0)',
+        paper_bgcolor='rgba(0,0,0,0)',
+        font=dict(size=12)
+    )
+    st.plotly_chart(fig1, use_container_width=True, theme="streamlit")
+    st.markdown("**Visual Context: Immersive Ecotourism Experiences Driving Longer Stays**")
+    st.markdown("These images illustrate the types of experiential, nature-based tourism that encourage extended visits in key focus countries:")
+    # Graph 2
+    st.markdown("##### Graph 2: Average Length of Stay in Focus Countries")
+    st.markdown("**Why this graph matters:** It isolates our nine key low-income countries that consistently show longer tourist stays, allowing direct comparison and identification of leaders like PNG and Kenya. This helps explain regional defiance of the global GDP-stay trend by visualizing how much these nations deviate upward. #FocusCountries #BarComparison #LongStayLeaders #SubSaharanAfrica #PacificOutliers")
+    st.markdown("**What the graph shows:** A sorted bar chart of average length of stay (days) for the selected countries. Papua New Guinea tops the list at nearly 15 days, followed by Kenya and Tanzania, while Benin and Morocco have shorter stays closer to global norms.")
+    fig2 = px.bar(
+        avg_selected.sort_values('length', ascending=False),
+        x='code',
+        y='length',
+        color='code',
+        text=avg_selected['country'].str.slice(0,15),
+        title='Average Length of Tourist Stay in Selected Low-Income Countries (1995–2020)',
+        labels={'length': 'Average Length of Stay (days)', 'code': 'Country Code'},
+        height=600,
+        color_discrete_sequence=px.colors.qualitative.Bold
+    )
+    fig2.update_traces(textposition='outside', marker_line=dict(width=2, color='white'))
+    fig2.update_layout(
+        showlegend=False,
+        title_x=0.5,
+        plot_bgcolor='rgba(0,0,0,0)',
+        bargap=0.2
+    )
+    st.plotly_chart(fig2, use_container_width=True, theme="streamlit")
+    # Graph 3
+    st.markdown("##### Graph 3: Length of Stay vs. Estimated Daily Expenditure per Tourist")
+    st.markdown("**Why this graph matters:** Affordability is the central hypothesis for why low-GDP countries have longer stays. This graph tests it directly by plotting stay length against daily spend per tourist – lower daily costs should enable longer visits on the same budget. #AffordabilityTest #DailyCost #BudgetTravel #CoreHypothesis #EconomicDriver")
+    st.markdown("**What the graph shows:** Scatter plot with bubble size reflecting total expenditure. Longer stays (PNG, KEN) generally correspond to lower daily expenditure, supporting the idea that cheaper daily costs in these destinations allow tourists to extend their trips.")
+    fig3 = px.scatter(
+        avg_df.dropna(subset=['daily_exp_per_tourist', 'expd_int']),
+        x='daily_exp_per_tourist',
+        y='length',
+        size='expd_int',
+        color='gdp_cat_mode',
+        hover_data=['country'],
+        log_x=True,
+        title='Length of Stay vs. Daily Tourist Expenditure (Affordability Proxy)',
+        labels={'daily_exp_per_tourist': 'Estimated Daily Expenditure per Tourist (USD, log scale)', 'length': 'Average Length of Stay (days)'},
+        height=600,
+        opacity=0.8,
+        color_discrete_sequence=px.colors.sequential.Viridis_r
+    )
+    fig3.add_scatter(
+        x=avg_selected['daily_exp_per_tourist'],
+        y=avg_selected['length'],
+        mode='markers+text',
+        marker=dict(size=30, color='crimson', symbol='star-diamond', line=dict(width=3, color='darkred')),
+        text=avg_selected['code'],
+        textposition='top center',
+        textfont=dict(size=12, color='white')
+    )
+    fig3.update_traces(marker=dict(line=dict(width=1, color='white')))
+    fig3.update_layout(title_x=0.5, legend_title="Income Level", plot_bgcolor='rgba(0,0,0,0)')
+    st.plotly_chart(fig3, use_container_width=True, theme="streamlit")
+    st.markdown("Note on Daily Expenditure: Some values appear high due to data reporting variations across years and countries. The overall negative trend (lower daily cost → longer stay) remains robust and supports the affordability hypothesis.")
+    # Graph 4
+    st.markdown("##### Graph 4: Business/Professional Travel vs. Length of Stay")
+    st.markdown("**Why this graph matters:** Business trips are typically short and purpose-driven, while leisure trips allow flexibility. If low-income focus countries have fewer business visitors, this could explain longer average stays – providing evidence that tourism type, not just cost, shapes duration. #TripPurpose #BusinessVsLeisure #StayDriver #TourismType #NegativeCorrelation")
+    st.markdown("**What the graph shows:** Higher volumes of business/professional tourists correlate with shorter average stays. Countries with very low business travel (e.g., VUT, SLE) tend to have longer stays, indicating leisure dominance.")
+    fig4 = px.scatter(
+        avg_df,
+        x='purpose_biz_profesh',
+        y='length',
+        color='gdp_cat_mode',
+        size='gdp',
+        log_x = True,
+        hover_data=['country'],
+        title='Business & Professional Visitors vs. Average Length of Stay',
+        labels={'purpose_biz_profesh': 'Average Business/Professional Visitors (count)', 'length': 'Average Length of Stay (days)'},
+        height=600,
+        opacity=0.7,
+        color_discrete_sequence=px.colors.sequential.Inferno_r
+    )
+    fig4.add_scatter(
+        x=avg_selected['purpose_biz_profesh'],
+        y=avg_selected['length'],
+        mode='markers+text',
+        marker=dict(size=30, color='crimson', symbol='star-diamond', line=dict(width=3, color='darkred')),
+        text=avg_selected['code'],
+        textposition='top center',
+        textfont=dict(size=12, color='white')
+    )
+    fig4.update_traces(marker=dict(line=dict(width=1, color='white')))
+    fig4.update_layout(title_x=0.5, legend_title="Income Level", plot_bgcolor='rgba(0,0,0,0)')
+    st.plotly_chart(fig4, use_container_width=True, theme="streamlit")
+    # Graph 5
+    st.markdown("##### Graph 5: Tourism Intensity vs. GDP per Capita")
+    st.markdown("**Why this graph matters:** It examines whether low-GDP countries attract fewer tourists overall but keep them longer – a pattern that would strengthen the affordability and niche tourism argument over mass high-volume short-stay models seen in wealthier nations. #TourismIntensity #PerCapitaVisitors #NicheVsMass #DependencyRisk #EconomicImpact")
+    st.markdown("**What the graph shows:** Tourists per 1,000 residents (y-axis) vs. GDP per capita. Vanuatu shows high intensity despite moderate GDP, while most focus countries have low intensity but (from other graphs) longer stays.")
+    fig5 = px.scatter(
+        avg_df,
+        x='gdp',
+        y='tourists_per_1000',
+        color='gdp_cat_mode',
+        size='length',
+        hover_data=['country'],
+        log_x=True,
+        title='Tourism Intensity (Visitors per 1,000 Residents) vs. GDP per Capita',
+        labels={'gdp': 'GDP per Capita (USD, log scale)', 'tourists_per_1000': 'Tourists per 1,000 Residents'},
+        height=600,
+        opacity=0.7,
+        color_discrete_sequence=px.colors.sequential.Teal_r
+    )
+    fig5.add_scatter(
+        x=avg_selected['gdp'],
+        y=avg_selected['tourists_per_1000'],
+        mode='markers+text',
+        marker=dict(size=30, color='crimson', symbol='star-diamond', line=dict(width=3, color='darkred')),
+        text=avg_selected['code'],
+        textposition='top center',
+        textfont=dict(size=12, color='white')
+    )
+    fig5.update_traces(marker=dict(line=dict(width=1, color='white')))
+    fig5.update_layout(title_x=0.5, legend_title="Income Level", plot_bgcolor='rgba(0,0,0,0)')
+    st.plotly_chart(fig5, use_container_width=True, theme="streamlit")
+    # Graph 6
+    st.markdown("##### Graph 6: International Tourist Arrivals Over Time (1995–2020)")
+    st.markdown("**Why this graph matters:** Trends over time reveal whether longer stays in low-income countries are a stable phenomenon or tied to growth/decline in arrivals, helping assess sustainability and the impact of external shocks like COVID-19. #TimeTrend #ArrivalGrowth #PandemicImpact #StabilityCheck #LongTermPattern")
+    st.markdown("**What the graph shows:** Line chart of annual arrivals (thousands) for each focus country. Most show growth until 2019, with sharp 2020 drops. Kenya and Morocco display strongest upward trends.")
+    fig6 = px.line(
+        df_time.sort_values('year'),
+        x='year',
+        y='arv_1000',
+        color='code',
+        markers=True,
+        line_shape='spline',
+        title='Evolution of International Tourist Arrivals in Focus Countries (1995–2020)',
+        labels={'arv_1000': 'International Arrivals (thousands)', 'year': 'Year'},
+        height=600,
+        color_discrete_sequence=px.colors.qualitative.Vivid
+    )
+    fig6.update_traces(line=dict(width=4), marker=dict(size=8))
+    fig6.update_layout(
+        title_x=0.5,
+        hovermode='x unified',
+        legend_title="Country Code",
+        plot_bgcolor='rgba(0,0,0,0)',
+        legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1)
+    )
+    st.plotly_chart(fig6, use_container_width=True, theme="streamlit")
+    
+    st.markdown("Anderson, W. (2011). Challenges of tourism development in the developing countries: the case of Tanzania.")
+    
+    st.markdown("https://scholar.google.com/citations?view_op=view_citation&hl=en&user=JCBqA3UAAAAJ&cstart=20&pagesize=80&citation_for_view=JCBqA3UAAAAJ:nVrZBo8bIpAC")
+    
+    st.markdown("Eurostat. (2024). Tourism statistics.")
+    
+    st.markdown("https://ec.europa.eu/eurostat/web/products-eurostat-news/w/ddn-20250304-2")
+    
+    st.markdown("Acevedo, S., et al. (2016). Caribbean Tourism in the Global Marketplace: Trends, Drivers, and Challenges.")
+    
+    st.markdown("https://www.elibrary.imf.org/display/book/9781484315194/ch03.xml")
+    
+    # 21 - tourist spending, subtract 25 - going for person reason, 24 - going for business & travel reason, from 23 - total arrivals(1000)
+    
+    # 21 - make per capita spending ovr -> divide by tourists
+    
+    # 21 -> multiply by 25/23
+    
+    # ask ai about how to find ratio of 21 that is from personal
+    
+    # 29 - more likely to be eco tourist countries -> care about enviro more or less -> more or less enviro monitoring differentiation
+    
+    # 30 - go back to em_c .groupby('year')
+    
+    # 34 - inspect inbound flights, find eco friendly countries
+    
+    # 33 - find a use
+    
+    # 35 - ratio of business to tourists
+    
+    # 36 - find inbound
+    
+    # 37 - same day is mostly business trips, might be able to find higher same day -> more business
 
 
 if selected == 'Conclusion':
