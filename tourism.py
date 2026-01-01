@@ -15,7 +15,7 @@ from streamlit_option_menu import option_menu
 st.set_page_config(layout="wide")
 
 
-mypath = '/Users/boredom/Downloads/Data_Science/DataSets/'
+mypath = ''
 
 tourism = pd.read_csv(mypath + 'tour_econ_df.csv')
 
