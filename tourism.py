@@ -15,7 +15,7 @@ from streamlit_option_menu import option_menu
 st.set_page_config(layout="wide")
 
 
-mypath = ''
+mypath = '/Users/boredom/Downloads/Data_Science/DataSets/'
 
 tourism = pd.read_csv(mypath + 'tour_econ_df.csv')
 
@@ -967,8 +967,8 @@ if selected == 'Defying Wealth: Extended Tourist Visits':
     
     st.markdown('##### Through an assimilation of literature and data visualizations, two potential causes of longer average are affordability and eco-tourism.')
 
-	st.dataframe(tourism)
-	
+    st.dataframe(tourism)
+
     df = tourism[['country', 'code', 'year', 'arv_1000', 'tourists_per_1000', 
              'purpose_biz_profesh', 'expd', 'length', 'gdp', 'gdp_cat']].copy()
     df.rename(columns={'expd': 'expd_int'}, inplace=True)
